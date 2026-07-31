@@ -1,0 +1,81 @@
+name: Release
+
+# Publish to npm on every push to main, bumping the patch version off whatever
+# is currently live on npm (npm latest + 1), then committing the new version
+# back to the repo.
+on:
+  push:
+    branches: [main]
+
+# Never run two releases at once.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+# The version-bump commit is pushed with GITHUB_TOKEN, which by design does NOT
+# re-trigger workflows; the `[skip ci]` guard below is an extra safety net.
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Compute next version (npm latest patch + 1)
+        id: ver
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          ONLINE=$(npm view "$NAME" version 2>/dev/null || true)
+          if [ -z "$ONLINE" ]; then
+            NEXT=$(node -p "require('./package.json').version")
+            echo "Package not on npm yet -> first release: $NEXT"
+          else
+            NEXT=$(node -e "const v=process.argv[1].split('.').map(Number); v[2]++; console.log(v.join('.'))" "$ONLINE")
+            echo "npm latest is $ONLINE -> next: $NEXT"
+          fi
+          echo "version=$NEXT" >> "$GITHUB_OUTPUT"
+
+      - name: Write version into package.json
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: npm version "$VERSION" --no-git-tag-version --allow-same-version
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Commit version bump and tag
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          if git diff --staged --quiet; then
+            echo "package.json already at $VERSION (first release); tagging only."
+          else
+            git commit -m "chore(release): v$VERSION [skip ci]"
+          fi
+          git tag -f "v$VERSION"
+          git push --follow-tags
