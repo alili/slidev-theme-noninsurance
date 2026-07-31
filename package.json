@@ -1,14 +1,40 @@
 {
   "name": "slidev-theme-bestony2026",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "description": "Crimson Deck — a dark, crimson-accented Slidev theme for technical reviews and product updates, with 27 layouts, 8 themed ECharts chart types, and Mermaid / PlantUML support.",
+  "author": "Bestony",
+  "license": "MIT",
+  "homepage": "https://github.com/bestony/slidev-theme-bestony2026#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bestony/slidev-theme-bestony2026.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bestony/slidev-theme-bestony2026/issues"
+  },
   "keywords": [
     "slidev-theme",
-    "slidev"
+    "slidev",
+    "theme",
+    "presentation",
+    "slides",
+    "dark",
+    "crimson",
+    "chinese",
+    "echarts",
+    "mermaid"
   ],
   "engines": {
     "node": ">=20.12.0"
   },
+  "files": [
+    "layouts",
+    "components",
+    "styles",
+    "setup",
+    "uno.config.ts"
+  ],
   "scripts": {
     "build": "slidev build example.md",
     "dev": "slidev example.md --open",
@@ -16,12 +42,12 @@
     "screenshot": "slidev export example.md --format png"
   },
   "dependencies": {
+    "@iconify-json/lucide": "^1.2.20",
     "@slidev/types": "^52.18.0",
     "echarts": "^5.5.1"
   },
   "devDependencies": {
-    "@slidev/cli": "^52.18.0",
-    "@iconify-json/lucide": "^1.2.20"
+    "@slidev/cli": "^52.18.0"
   },
   "//": "Learn more: https://sli.dev/guide/write-theme.html",
   "slidev": {
