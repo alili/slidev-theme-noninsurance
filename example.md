@@ -296,6 +296,10 @@ layout: chart
 type: bar
 meta: 日均成本 · 元
 note: 迁移后四条线全部下降，库存快照降幅最大
+categories: [订单 GMV, 流量归因, 库存快照, 财务对账]
+series:
+  - { name: 迁移前, data: [4980, 4340, 2480, 1310] }
+  - { name: 迁移后, data: [1840, 2260, 720, 1150] }
 ---
 
 ## 四条业务线的成本变化
@@ -312,13 +316,17 @@ bullets:
 
 ::image::
 
-<CDChart type="pie" />
+<CDChart type="pie" :data="[{ name: '存储', value: 42 }, { name: '计算', value: 27 }, { name: '流式集群', value: 18 }, { name: '其他', value: 13 }]" />
 
 ---
 layout: chart
 type: line
 meta: 2026.01 – 2026.07
 note: 4 月上线语义层后，两条曲线同步下降并趋于平稳
+categories: [1月, 2月, 3月, 4月, 5月, 6月, 7月]
+series:
+  - { name: P95 延迟 (h), data: [18, 16.4, 13.1, 10.2, 8.4, 7.1, 6.7] }
+  - { name: P1 故障数, data: [6, 5, 4, 2, 1, 0, 0] }
 ---
 
 ## 延迟与故障数的月度趋势

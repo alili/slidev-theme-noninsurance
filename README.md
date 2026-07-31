@@ -139,12 +139,51 @@ Registered globally — use them in any slide without importing.
 
 - **`<CDKicker text="Agenda" />`** — crimson square + monospaced, letter-spaced
   eyebrow label. Also accepts a default slot.
-- **`<CDChart type="…" />`** — themed ECharts wrapper. Built-in types:
-  `bar`, `line`, `scatter`, `heatmap`, `sankey` (use full-width via the `chart`
-  layout) and `pie`, `radar`, `funnel` (place in an `image-left` / `image-right`
-  `::image::` slot). Each ships demo data; pass `:option="…"` for your own.
-  The host element must have a height.
+- **`<CDChart type="…" />`** — themed ECharts wrapper. The theme *styling* is
+  built in; the *data* is yours to pass, so charts are reusable across decks.
+  Types: `bar`, `line`, `scatter`, `heatmap`, `sankey` (full-width via the
+  `chart` layout) and `pie`, `radar`, `funnel` (in an `image-left` /
+  `image-right` `::image::` slot). The host element must have a height.
 - **`<CDPageNumber />`** — bottom-right page number (reads the current page).
+
+### Passing chart data
+
+Both ways are optional — every chart falls back to built-in sample data.
+
+Via the `chart` layout's frontmatter (full-width charts); the layout forwards
+the data props to `CDChart`:
+
+```yaml
+---
+layout: chart
+type: bar
+categories: [订单 GMV, 流量归因, 库存快照]
+series:
+  - { name: 迁移前, data: [4980, 4340, 2480] }
+  - { name: 迁移后, data: [1840, 2260, 720] }
+---
+```
+
+Or directly on `<CDChart>` (e.g. inside an `::image::` slot):
+
+```html
+<CDChart type="pie" :data="[{ name: '存储', value: 42 }, { name: '计算', value: 27 }]" />
+<CDChart type="sankey" :nodes="[…]" :links="[…]" />
+```
+
+Per-type data props (each falls back to sample data when omitted):
+
+| Type | Data props |
+| --- | --- |
+| `bar` / `line` | `categories`, `series: [{ name, data, dashed?, area? }]` |
+| `scatter` | `series: [{ data: [[x,y], …], color? }]` |
+| `pie` / `funnel` | `data: [{ name, value, color? }]` |
+| `radar` | `indicator: [{ name, max }]`, `series: [{ name, value: number[] }]` |
+| `sankey` | `nodes: [{ name, color? }]`, `links: [{ source, target, value }]` |
+| `heatmap` | `categories` (x), `yCategories` (y), `data: [[x,y,v], …]` |
+
+For anything else, pass a full/partial ECharts `:option` (deep-merged over the
+themed preset).
 
 ## Icons
 

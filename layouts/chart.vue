@@ -4,20 +4,34 @@
 // bar / line / scatter / heatmap / sankey and other wide charts; for pie / radar
 // / funnel (chart + text, side-by-side) use image-left / image-right instead,
 // placing the CDChart in the image slot.
-// Frontmatter: type (chart kind → CDChart), meta? (top-right mono micro), note? (below chart).
-// Title: the `title` prop, or an <h2> written in the default slot markdown.
+//
+// Data is passed through to <CDChart> — supply it from frontmatter:
+//   ---
+//   layout: chart
+//   type: bar
+//   categories: [A, B, C]
+//   series:
+//     - { name: 前, data: [1, 2, 3] }
+//     - { name: 后, data: [4, 5, 6] }
+//   ---
+// Omit the data props to render the built-in sample data.
 withDefaults(
   defineProps<{
     type?: string
     title?: string
     meta?: string
     note?: string
+    // chart data — forwarded to CDChart (see CDChart for per-type shapes)
+    categories?: (string | number)[]
+    yCategories?: (string | number)[]
+    series?: any[]
+    data?: any[]
+    nodes?: any[]
+    links?: any[]
+    indicator?: any[]
+    option?: any
   }>(),
-  {
-    type: 'bar',
-    meta: '日均成本 · 元',
-    note: '迁移后四条线全部下降，库存快照降幅最大',
-  },
+  { type: 'bar' },
 )
 </script>
 
@@ -32,7 +46,17 @@ withDefaults(
     </div>
 
     <div class="cd-chart__canvas">
-      <CDChart :type="type" />
+      <CDChart
+        :type="type"
+        :categories="categories"
+        :y-categories="yCategories"
+        :series="series"
+        :data="data"
+        :nodes="nodes"
+        :links="links"
+        :indicator="indicator"
+        :option="option"
+      />
     </div>
 
     <p v-if="note" class="cd-chart__note">{{ note }}</p>
