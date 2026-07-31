@@ -1,50 +1,165 @@
 # slidev-theme-bestony2026
 
-[![NPM version](https://img.shields.io/npm/v/slidev-theme-bestony2026?color=3AB9D4&label=)](https://www.npmjs.com/package/slidev-theme-bestony2026)
+[![NPM version](https://img.shields.io/npm/v/slidev-theme-bestony2026?color=C81418&label=)](https://www.npmjs.com/package/slidev-theme-bestony2026)
 
-A (...) theme for [Slidev](https://github.com/slidevjs/slidev).
-
-<!--
-  Learn more about how to write a theme:
-  https://sli.dev/guide/write-theme.html
---->
-
-<!--
-  run `npm run dev` to check out the slides for more details of how to start writing a theme
--->
-
-<!--
-  Put some screenshots here to demonstrate your theme
-
-  Live demo: [...]
--->
+**Crimson Deck** — a dark, crimson-accented [Slidev](https://github.com/slidevjs/slidev)
+theme for technical reviews and product updates. Deep black surfaces, a single
+crimson accent, Noto Sans SC for Chinese and JetBrains Mono for numbers/labels.
+Ships **27 layouts**, 8 themed ECharts chart types, and crimson-styled Mermaid /
+PlantUML / code blocks.
 
 ## Install
 
-Add the following frontmatter to your `slides.md`. Start Slidev then it will prompt you to install the theme automatically.
+Add the theme to your slides' headmatter — Slidev will prompt to install it:
 
-<pre><code>---
-theme: <b>bestony2026</b>
----</code></pre>
+```yaml
+---
+theme: bestony2026
+canvasWidth: 1920
+---
+```
 
-Learn more about [how to use a theme](https://sli.dev/guide/theme-addon#use-theme).
+> **Important:** this theme is designed on a **1920×1080** canvas. Set
+> `canvasWidth: 1920` in your headmatter so every layout renders at the intended
+> proportions. (The bundled `example.md` sets it for you.)
+
+## Customization
+
+- **Accent color** — driven by `themeConfig.primary`; defaults to crimson `rgb(200,20,24)`:
+
+  ```yaml
+  ---
+  theme: bestony2026
+  themeConfig:
+    primary: '#1E6FD9'   # any color; the whole deck follows
+  ---
+  ```
+
+- **Global scale** — every font size is `original × var(--cd-scale)`. Shrink or grow
+  the whole deck by overriding `--cd-scale` (default `1`) in your own CSS.
+- **Design tokens** — colors, type scale and spacing live in `styles/vars.css`
+  as `--cd-*` custom properties; override any of them per-deck.
 
 ## Layouts
 
-This theme provides the following layouts:
+The theme is authored with a **mixed API**: structured, repeating content
+(cards, metrics, timeline nodes…) comes from frontmatter props, while titles and
+prose come from Markdown. Named slots use Slidev's `::name::` syntax.
 
-> TODO:
+See [`example.md`](./example.md) for a complete, working deck that uses **every**
+layout with realistic content.
+
+### Cover & structure
+
+| Layout | Purpose | Key frontmatter / slots |
+| --- | --- | --- |
+| `cover` | Title slide (crimson glow, meta row) | `kicker`, `speaker`, `org`, `date` · slot: `# title` + `subtitle` |
+| `intro` | Centered lead-in | slot: `# title` + `paragraph` |
+| `section` | Chapter divider (full crimson) | `no` · slot: `## title` + `note` |
+| `statement` | Big claim + supporting points | `points[{no,text}]` · slot: claim (use `**…**` to highlight) |
+| `quote` | Pull quote | `author` · slot: quote text |
+| `fact` | Emphasis / demo cue (full crimson) | `icon` (lucide) · slot: `## big` + `note` |
+| `closing` | Decisions / asks | `items[]`, `footLeft`, `footRight` · slot: `## title` |
+| `end` | Closing slide (big word) | `eyebrow`, `big` · slot: closing note |
+
+### Content & data
+
+| Layout | Purpose | Key frontmatter / slots |
+| --- | --- | --- |
+| `default` | Standard content slide | slot: Markdown (`#`, lists, `>`, tables) |
+| `agenda` | Table of contents | `kicker`, `items[{no,title,desc}]` |
+| `metrics` | Stat cards (crimson top rule) | `items[{value,unit,label,note}]` · slot: `## title` |
+| `compare` | Before / after columns | `title`, `leftLabel`, `rightLabel` · slots: `::left::` `::right::` |
+| `roadmap` | Milestones (4 columns) | `items[{phase,title,desc,active}]` · slot: `## title` |
+| `timeline` | Horizontal timeline | `items[{time,title,desc,done}]` · slot: `## title` |
+| `steps` | Numbered step cards + icons | `items[{icon,step,title,desc}]` · slot: `## title` |
+| `table` | Data table | `title`, `meta`, `note` · slot: Markdown table |
+
+### Media, code & charts
+
+| Layout | Purpose | Key frontmatter / slots |
+| --- | --- | --- |
+| `image-full` | Full-bleed image + overlay text | `image`, `kicker`, `title`, `desc` |
+| `image-left` | Visual left / text right | `image`, `split`, `kicker`, `bullets[]` · slots: `::image::` + text |
+| `image-right` | Text left / visual right | `image`, `split` · slots: text + `::image::` |
+| `image-grid` | 3-up image grid | `images[{src,title,desc}]` · slot: `## title` |
+| `diagram` | Mermaid / diagram container | `title`, `label`, `notes[{key,text}]` · slot: ` ```mermaid ` |
+| `chart` | Full-width ECharts | `type`, `meta`, `note` · slot: `## title` |
+| `code` | Full-screen code | `title`, `file` · slot: fenced code |
+| `code-cols` | Code + explanation | `file`, `kicker`, `items[{key,desc}]` · slots: `::code::` + text |
+| `team` | Team grid (4-up) | `members[{photo,name,role}]` · slot: `## title` |
+| `logos` | Logo wall (3×2) | `subtitle`, `logos[{src,name}]` · slot: `## title` |
+| `contact` | Contact + QR code | `kicker`, `contacts[{icon,label,value}]`, `qr`, `qrCaption` · slot: `## title` |
+
+Example — an `agenda` slide:
+
+```markdown
+---
+layout: agenda
+kicker: Agenda
+items:
+  - no: "01"
+    title: 项目背景
+    desc: 为什么现在重构
+  - no: "02"
+    title: 架构与实现
+    desc: 链路、组件与关键代码
+---
+```
+
+Example — a full-width chart and a chart beside text:
+
+```markdown
+---
+layout: chart
+type: bar
+meta: 日均成本 · 元
+note: 迁移后四条线全部下降
+---
+
+## 四条业务线的成本变化
+
+---
+layout: image-left
+kicker: Cost Split
+bullets:
+  - 存储仍占 42%，主要来自双跑期间保留的旧表
+---
+
+## 成本构成
+
+::image::
+
+<CDChart type="pie" />
+```
 
 ## Components
 
-This theme provides the following components:
+Registered globally — use them in any slide without importing.
 
-> TODO:
+- **`<CDKicker text="Agenda" />`** — crimson square + monospaced, letter-spaced
+  eyebrow label. Also accepts a default slot.
+- **`<CDChart type="…" />`** — themed ECharts wrapper. Built-in types:
+  `bar`, `line`, `scatter`, `heatmap`, `sankey` (use full-width via the `chart`
+  layout) and `pie`, `radar`, `funnel` (place in an `image-left` / `image-right`
+  `::image::` slot). Each ships demo data; pass `:option="…"` for your own.
+  The host element must have a height.
+- **`<CDPageNumber />`** — bottom-right page number (reads the current page).
+
+## Icons
+
+Layouts render [Lucide](https://lucide.dev) icons via UnoCSS classes like
+`i-lucide-git-branch`. Because these names are dynamic, they can't be discovered
+by static analysis, so [`uno.config.ts`](./uno.config.ts) safelists the icons the
+demo uses plus common ones. **If you reference another lucide icon, add its
+`i-lucide-<name>` to the safelist** (or write the static class directly).
 
 ## Contributing
 
-- `npm install`
-- `npm run dev` to start theme preview of `example.md`
-- Edit the `example.md` and style to see the changes
-- `npm run export` to generate the preview PDF
-- `npm run screenshot` to generate the preview PNG
+- `pnpm install`
+- `pnpm dev` — start the `example.md` preview
+- Edit `example.md`, `layouts/*`, `styles/*` and watch changes live
+- `pnpm build` — build the demo as a static SPA
+- `pnpm export` / `pnpm screenshot` — export PDF / PNGs
+
+Learn more about writing themes: <https://sli.dev/guide/write-theme>

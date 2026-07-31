@@ -1,0 +1,29 @@
+/* ============================================================================
+ * Crimson Deck — code blocks
+ * Slidev renders code via Shiki (see setup/shiki.ts). We keep Shiki's token
+ * colors but reskin the container to match the crimson surface.
+ * ========================================================================== */
+:root {
+  --slidev-code-font-size: var(--cd-type-code);
+  --slidev-code-line-height: 1.7;
+  --slidev-code-radius: 0px;
+  --slidev-code-background: var(--cd-surface);
+}
+
+.slidev-layout pre,
+.slidev-layout .slidev-code {
+  font-family: var(--cd-font-mono) !important;
+  font-size: var(--cd-type-code);
+  line-height: 1.7;
+  background: var(--cd-surface) !important;
+  border-top: 3px solid var(--cd-accent);
+  border-radius: 0;
+  padding: 40px 48px;
+  box-sizing: border-box;
+}
+
+/* keep the shiki token font monospaced */
+.slidev-layout .slidev-code .line,
+.slidev-layout .slidev-code span {
+  font-family: var(--cd-font-mono) !important;
+}

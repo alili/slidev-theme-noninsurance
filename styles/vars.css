@@ -1,0 +1,48 @@
+/* ============================================================================
+ * Crimson Deck — design tokens
+ * All sizing assumes a 1920×1080 canvas (see canvasWidth in package.json),
+ * so the values below are 1:1 with the original design.
+ *
+ * Accent color is driven by --slidev-theme-primary, which Slidev generates
+ * from `themeConfig.primary`. Override it per-deck:
+ *   ---
+ *   themeConfig:
+ *     primary: '#1E6FD9'
+ *   ---
+ * ========================================================================== */
+:root {
+  /* surfaces & ink */
+  --cd-bg: #08080a;
+  --cd-surface: #121215;
+  --cd-surface-2: #1a1a1f;
+  --cd-fg: #f2efee;
+  --cd-muted: #9c9aa2;
+  --cd-line: rgba(255, 255, 255, 0.11);
+
+  /* accent — overridable via themeConfig.primary */
+  --slidev-theme-primary: rgb(200, 20, 24);
+  --cd-accent: var(--slidev-theme-primary);
+  --cd-accent-soft: rgba(200, 20, 24, 0.18);
+  --cd-accent-dim: #7a0f12;
+
+  /* type scale — multiply everything by --cd-scale to shrink/grow globally */
+  --cd-scale: 1;
+  --cd-type-mega: calc(200px * var(--cd-scale));
+  --cd-type-title: calc(78px * var(--cd-scale));
+  --cd-type-subtitle: calc(46px * var(--cd-scale));
+  --cd-type-body: calc(34px * var(--cd-scale));
+  --cd-type-small: calc(27px * var(--cd-scale));
+  --cd-type-micro: calc(24px * var(--cd-scale));
+  --cd-type-code: calc(28px * var(--cd-scale));
+
+  /* spacing */
+  --cd-pad-top: 96px;
+  --cd-pad-bottom: 80px;
+  --cd-pad-x: 100px;
+  --cd-gap-title: 48px;
+  --cd-gap-item: 26px;
+
+  /* fonts */
+  --cd-font-sans: 'Noto Sans SC', system-ui, sans-serif;
+  --cd-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
