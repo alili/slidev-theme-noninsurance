@@ -51,5 +51,5 @@
 
   /* fonts */
   --cd-font-sans: 'Noto Sans SC', system-ui, sans-serif;
-  --cd-font-mono: 'JetBrains Mono', 'Ubuntu Mono', ui-monospace, monospace;
+  --cd-font-mono: 'Ubuntu Mono', 'JetBrains Mono', ui-monospace, monospace;
 }
