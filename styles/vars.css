@@ -10,6 +10,13 @@
  *     primary: '#1E6FD9'
  *   ---
  * ========================================================================== */
+
+/* Ubuntu Mono is loaded on its own (weights 400/700) rather than through
+ * Slidev's global `fonts` — its weight set differs from Noto Sans SC /
+ * JetBrains Mono, and mixing it into the shared weights list would make the
+ * whole Google Fonts request fail. */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
+
 :root {
   /* surfaces & ink */
   --cd-bg: #08080a;
@@ -44,5 +51,5 @@
 
   /* fonts */
   --cd-font-sans: 'Noto Sans SC', system-ui, sans-serif;
-  --cd-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --cd-font-mono: 'JetBrains Mono', 'Ubuntu Mono', ui-monospace, monospace;
 }
