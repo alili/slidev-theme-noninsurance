@@ -2,7 +2,8 @@ name: Release
 
 # Publish to npm on every push to main, bumping the patch version off whatever
 # is currently live on npm (npm latest + 1), then committing the new version
-# back to the repo.
+# back to the repo. Authentication uses npm Trusted Publishing (OIDC) — no
+# NPM_TOKEN secret required.
 on:
   push:
     branches: [main]
@@ -12,10 +13,9 @@ concurrency:
   group: release
   cancel-in-progress: false
 
-# The version-bump commit is pushed with GITHUB_TOKEN, which by design does NOT
-# re-trigger workflows; the `[skip ci]` guard below is an extra safety net.
 permissions:
-  contents: write
+  contents: write # push the version-bump commit + tag
+  id-token: write # npm Trusted Publishing (OIDC) + provenance
 
 jobs:
   release:
@@ -37,6 +37,9 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
+
+      - name: Upgrade npm for Trusted Publishing (needs npm >= 11.5.1)
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -60,10 +63,8 @@ jobs:
           VERSION: ${{ steps.ver.outputs.version }}
         run: npm version "$VERSION" --no-git-tag-version --allow-same-version
 
-      - name: Publish to npm
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm (Trusted Publishing)
+        run: npm publish --access public --provenance
 
       - name: Commit version bump and tag
         env:
