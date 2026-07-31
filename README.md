@@ -12,20 +12,20 @@ PlantUML / code blocks.
 
 <table>
   <tr>
-    <td width="50%"><img src="screenshots/01-cover.png" alt="Cover"></td>
-    <td width="50%"><img src="screenshots/02-metrics.png" alt="Metric cards"></td>
+    <td width="50%"><img src="assets/01-cover.png" alt="Cover"></td>
+    <td width="50%"><img src="assets/02-metrics.png" alt="Metric cards"></td>
   </tr>
   <tr>
-    <td><img src="screenshots/03-sankey.png" alt="Chart beside text (sankey)"></td>
-    <td><img src="screenshots/04-diagram.png" alt="Mermaid diagram"></td>
+    <td><img src="assets/03-sankey.png" alt="Chart beside text (sankey)"></td>
+    <td><img src="assets/04-diagram.png" alt="Mermaid diagram"></td>
   </tr>
   <tr>
-    <td><img src="screenshots/05-chart-bar.png" alt="Full-width bar chart"></td>
-    <td><img src="screenshots/06-steps.png" alt="Step cards with icons"></td>
+    <td><img src="assets/05-chart-bar.png" alt="Full-width bar chart"></td>
+    <td><img src="assets/06-steps.png" alt="Step cards with icons"></td>
   </tr>
   <tr>
-    <td><img src="screenshots/07-code-cols.png" alt="Code + explanation"></td>
-    <td><img src="screenshots/08-timeline.png" alt="Timeline"></td>
+    <td><img src="assets/07-code-cols.png" alt="Code + explanation"></td>
+    <td><img src="assets/08-timeline.png" alt="Timeline"></td>
   </tr>
 </table>
 
