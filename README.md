@@ -8,6 +8,29 @@ crimson accent, Noto Sans SC for Chinese and JetBrains Mono for numbers/labels.
 Ships **27 layouts**, 8 themed ECharts chart types, and crimson-styled Mermaid /
 PlantUML / code blocks.
 
+## Preview
+
+<table>
+  <tr>
+    <td width="50%"><img src="screenshots/01-cover.png" alt="Cover"></td>
+    <td width="50%"><img src="screenshots/02-metrics.png" alt="Metric cards"></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/03-sankey.png" alt="Chart beside text (sankey)"></td>
+    <td><img src="screenshots/04-diagram.png" alt="Mermaid diagram"></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/05-chart-bar.png" alt="Full-width bar chart"></td>
+    <td><img src="screenshots/06-steps.png" alt="Step cards with icons"></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/07-code-cols.png" alt="Code + explanation"></td>
+    <td><img src="screenshots/08-timeline.png" alt="Timeline"></td>
+  </tr>
+</table>
+
+<sub>Rendered from <a href="./example.md"><code>example.md</code></a> at 1920×1080. See it live with <code>pnpm dev</code>.</sub>
+
 ## Install
 
 Add the theme to your slides' headmatter — Slidev will prompt to install it:
