@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<{ type?: string; option?: any }>(), {
 const root = ref<HTMLElement | null>(null)
 let echarts: any = null
 let chart: any = null
+let ro: ResizeObserver | null = null
 
 function theme() {
   const cs = getComputedStyle(document.documentElement)
@@ -187,6 +188,10 @@ function preset(kind: string, t: any): any {
 
 async function render() {
   if (!root.value) return
+  // Slidev mounts off-screen slides with 0-size DOM; ECharts can't lay out
+  // into 0×0. Bail until the container has a real size — the ResizeObserver
+  // re-renders once it does.
+  if (!root.value.clientWidth || !root.value.clientHeight) return
   if (!echarts) echarts = await import('echarts')
   const opt = props.option ?? preset(props.type, theme())
   if (!opt) return
@@ -196,16 +201,21 @@ async function render() {
 }
 
 function onResize() {
-  if (chart) chart.resize()
+  render()
 }
 
 onMounted(() => {
   render()
   window.addEventListener('resize', onResize)
+  if (typeof ResizeObserver !== 'undefined' && root.value) {
+    ro = new ResizeObserver(() => render())
+    ro.observe(root.value)
+  }
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onResize)
+  if (ro) { ro.disconnect(); ro = null }
   if (chart) { chart.dispose(); chart = null }
 })
 
