@@ -22,7 +22,7 @@ defineProps<{
       </div>
     </div>
     <div v-if="speaker || org || date" class="cd-cover__meta">
-      <span v-if="speaker">汇报人 / {{ speaker }}</span>
+      <span v-if="speaker">分享人 / {{ speaker }}</span>
       <span v-if="org">{{ org }}</span>
       <span v-if="date">{{ date }}</span>
     </div>
