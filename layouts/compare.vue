@@ -2,9 +2,13 @@
 // Compare — two-column before/after contrast beneath a section title.
 // Frontmatter: title? (or a default-slot h2), leftLabel? ("Before"), rightLabel? ("After").
 // Named slots ::left:: / ::right:: hold each column's body (muted vs. normal ink).
-withDefaults(
+import { useSlideTitle } from '../composables/useSlideTitle'
+
+const props = withDefaults(
   defineProps<{
     title?: string
+    /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+    frontmatter?: Record<string, any>
     leftLabel?: string
     rightLabel?: string
   }>(),
@@ -13,11 +17,13 @@ withDefaults(
     rightLabel: 'After',
   },
 )
+
+const heading = useSlideTitle(props)
 </script>
 
 <template>
   <div class="slidev-layout cd-compare">
-    <h2 v-if="title" class="cd-compare__title">{{ title }}</h2>
+    <h2 v-if="heading" class="cd-compare__title">{{ heading }}</h2>
     <div v-else class="cd-compare__title-slot">
       <slot />
     </div>

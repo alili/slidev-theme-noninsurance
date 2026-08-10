@@ -15,10 +15,14 @@
 //     - { name: 后, data: [4, 5, 6] }
 //   ---
 // Omit the data props to render the built-in sample data.
-withDefaults(
+import { useSlideTitle } from '../composables/useSlideTitle'
+
+const props = withDefaults(
   defineProps<{
     type?: string
     title?: string
+    /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+    frontmatter?: Record<string, any>
     meta?: string
     note?: string
     // chart data — forwarded to CDChart (see CDChart for per-type shapes)
@@ -33,12 +37,14 @@ withDefaults(
   }>(),
   { type: 'bar' },
 )
+
+const heading = useSlideTitle(props)
 </script>
 
 <template>
   <div class="slidev-layout cd-chart">
     <div class="cd-chart__head">
-      <h2 v-if="title" class="cd-chart__title">{{ title }}</h2>
+      <h2 v-if="heading" class="cd-chart__title">{{ heading }}</h2>
       <slot v-else>
         <h2 class="cd-chart__title">四条业务线的成本变化</h2>
       </slot>

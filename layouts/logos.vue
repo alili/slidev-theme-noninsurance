@@ -5,6 +5,8 @@
 // Frontmatter: title, subtitle, logos[]. The title/subtitle may instead be
 // written as markdown (h2 + p) — both flow through the same :deep styles.
 
+import { useSlideTitle } from '../composables/useSlideTitle'
+
 interface CDLogo {
   /** Image path. When omitted the cell renders a dashed placeholder. */
   src?: string
@@ -12,9 +14,11 @@ interface CDLogo {
   name?: string
 }
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string
+    /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+    frontmatter?: Record<string, any>
     subtitle?: string
     logos?: CDLogo[]
   }>(),
@@ -24,14 +28,16 @@ withDefaults(
   },
 )
 
+const heading = useSlideTitle(props)
+
 const placeholderLabel = (i: number) => `Logo ${String(i + 1).padStart(2, '0')}`
 </script>
 
 <template>
   <div class="slidev-layout cd-logos">
-    <h2 v-if="title">{{ title }}</h2>
-    <p v-if="subtitle">{{ subtitle }}</p>
+    <h2 v-if="heading">{{ heading }}</h2>
     <slot />
+    <p v-if="subtitle">{{ subtitle }}</p>
 
     <div class="cd-logos__grid">
       <div v-for="(logo, i) in logos" :key="i" class="cd-logos__cell">

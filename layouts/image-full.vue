@@ -7,19 +7,25 @@
 //   - image absent   → dashed placeholder box on --cd-surface
 // Default slot: overrides the caption text (title/desc) with custom markdown
 //   (h1/h2/p/ul). The kicker always comes from the `kicker` prop.
-defineProps<{
+import { useSlideTitle } from '../composables/useSlideTitle'
+
+const props = defineProps<{
   image?: string
   kicker?: string
   title?: string
+  /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+  frontmatter?: Record<string, any>
   desc?: string
 }>()
+
+const heading = useSlideTitle(props)
 </script>
 
 <template>
   <div class="slidev-layout cd-image-full">
     <!-- layer 1: full-bleed media (real image, or a dashed placeholder) -->
     <div class="cd-image-full__media">
-      <img v-if="image" :src="image" :alt="title || ''" class="cd-image-full__img">
+      <img v-if="image" :src="image" :alt="heading || ''" class="cd-image-full__img">
       <div v-else class="cd-image-full__placeholder">拖入全屏配图 / 1920×1080</div>
     </div>
 
@@ -30,7 +36,7 @@ defineProps<{
     <div class="cd-image-full__caption">
       <CDKicker v-if="kicker" :text="kicker" />
       <slot>
-        <h2 v-if="title">{{ title }}</h2>
+        <h2 v-if="heading">{{ heading }}</h2>
         <p v-if="desc">{{ desc }}</p>
       </slot>
     </div>

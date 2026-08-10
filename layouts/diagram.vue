@@ -4,6 +4,8 @@
 // Frontmatter: title, label, notes[]. Default slot: the ```mermaid``` (or
 // ```plantuml```) code block; Slidev renders the actual diagram, this layout
 // only supplies the framed surface.
+import { useSlideTitle } from '../composables/useSlideTitle'
+
 interface DiagramNote {
   /** Monospaced accent key, e.g. a pipeline stage name. */
   key: string
@@ -14,14 +16,15 @@ interface DiagramNote {
 interface Props {
   /** Section title, rendered as the left-aligned h2 in the header bar. */
   title?: string
+  /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+  frontmatter?: Record<string, any>
   /** Monospaced uppercase micro accent shown at the top-right. */
   label?: string
   /** Optional 3-column footnotes rendered under the diagram surface. */
   notes?: DiagramNote[]
 }
 
-withDefaults(defineProps<Props>(), {
-  title: '端到端数据链路',
+const props = withDefaults(defineProps<Props>(), {
   label: 'Mermaid',
   notes: () => [
     { key: '采集', text: 'CDC 直接落 Kafka，不再走每日抽取' },
@@ -29,12 +32,16 @@ withDefaults(defineProps<Props>(), {
     { key: '消费', text: '看板与告警共用同一套指标定义' },
   ],
 })
+
+// The sample title is the fallback, not a `withDefaults` value — a default
+// would win over the frontmatter and pin every diagram to the demo heading.
+const heading = useSlideTitle(props, '端到端数据链路')
 </script>
 
 <template>
   <div class="slidev-layout cd-diagram">
     <div class="cd-diagram__head">
-      <h2 v-if="title" class="cd-diagram__title">{{ title }}</h2>
+      <h2 v-if="heading" class="cd-diagram__title">{{ heading }}</h2>
       <span v-if="label" class="cd-diagram__label">{{ label }}</span>
     </div>
 

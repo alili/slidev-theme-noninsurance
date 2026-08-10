@@ -31,6 +31,7 @@
   "files": [
     "layouts",
     "components",
+    "composables",
     "styles",
     "setup",
     "uno.config.ts"

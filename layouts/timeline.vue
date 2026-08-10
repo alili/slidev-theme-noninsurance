@@ -5,6 +5,8 @@
 // muted marker marks a stage still ahead.
 // Frontmatter: title? (or write the heading as markdown `##`), items[].
 // Slot: <h2> heading (+ optional lead <p>).
+import { useSlideTitle } from '../composables/useSlideTitle'
+
 interface TimelineItem {
   time: string
   title: string
@@ -12,9 +14,11 @@ interface TimelineItem {
   done?: boolean
 }
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string
+    /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+    frontmatter?: Record<string, any>
     items?: TimelineItem[]
   }>(),
   {
@@ -26,12 +30,14 @@ withDefaults(
     ],
   },
 )
+
+const heading = useSlideTitle(props)
 </script>
 
 <template>
   <div class="slidev-layout cd-timeline">
     <div class="cd-timeline__head">
-      <h2 v-if="title" class="cd-timeline__title">{{ title }}</h2>
+      <h2 v-if="heading" class="cd-timeline__title">{{ heading }}</h2>
       <slot />
     </div>
 

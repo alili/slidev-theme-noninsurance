@@ -7,6 +7,8 @@
 // Frontmatter: images[] (structured). Heading via the `title` prop OR a markdown
 // `## …` in the slot (styled the same). Bottom-right page number via <CDPageNumber />.
 
+import { useSlideTitle } from '../composables/useSlideTitle'
+
 interface ImageItem {
   /** Screenshot path; omit to render the "模块截图 0N" placeholder tile. */
   src?: string
@@ -16,9 +18,11 @@ interface ImageItem {
   desc?: string
 }
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string
+    /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+    frontmatter?: Record<string, any>
     images?: ImageItem[]
   }>(),
   {
@@ -30,13 +34,15 @@ withDefaults(
   },
 )
 
+const heading = useSlideTitle(props)
+
 // 1-based, zero-padded index for the "模块截图 0N" placeholder label.
 const pad = (i: number) => String(i + 1).padStart(2, '0')
 </script>
 
 <template>
   <div class="slidev-layout cd-image-grid">
-    <h2 v-if="title" class="cd-image-grid__heading">{{ title }}</h2>
+    <h2 v-if="heading" class="cd-image-grid__heading">{{ heading }}</h2>
     <slot />
 
     <div class="cd-image-grid__grid">

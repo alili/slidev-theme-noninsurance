@@ -1,6 +1,8 @@
 <script setup lang="ts">
 // Metrics — a title over a row of equal-height stat cards (crimson top border).
 // Frontmatter: `title` (or an <h2> in the slot) + `items[]`. Slot: <h2> title.
+import { useSlideTitle } from '../composables/useSlideTitle'
+
 interface MetricItem {
   value: string
   unit?: string
@@ -8,9 +10,11 @@ interface MetricItem {
   note?: string
 }
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string
+    /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+    frontmatter?: Record<string, any>
     items?: MetricItem[]
   }>(),
   {
@@ -21,12 +25,14 @@ withDefaults(
     ],
   },
 )
+
+const heading = useSlideTitle(props)
 </script>
 
 <template>
   <div class="slidev-layout cd-metrics">
     <div class="cd-metrics__head">
-      <h2 v-if="title" class="cd-metrics__title">{{ title }}</h2>
+      <h2 v-if="heading" class="cd-metrics__title">{{ heading }}</h2>
       <slot v-else>
         <h2 class="cd-metrics__title">重构半年后的三个变化</h2>
       </slot>

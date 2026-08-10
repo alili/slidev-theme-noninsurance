@@ -3,6 +3,8 @@
 // crimson 3px top border with an accent label; the rest get a 1px hairline
 // border with a muted label. Structured milestones come from `items`, the
 // heading from either the `title` prop or a markdown `## …` slot.
+import { useSlideTitle } from '../composables/useSlideTitle'
+
 interface RoadmapItem {
   /** Mono phase tag, e.g. "Q3 · 8月" */
   phase: string
@@ -16,10 +18,12 @@ interface RoadmapItem {
 
 interface Props {
   title?: string
+  /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+  frontmatter?: Record<string, any>
   items?: RoadmapItem[]
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   items: () => [
     { phase: 'Q3 · 8月', title: '语义层接入全部 BI 看板', desc: '下线 4 套遗留脚本', active: true },
     { phase: 'Q3 · 9月', title: '质量规则覆盖核心 80 张表', desc: '告警分级与值班表联动', active: true },
@@ -27,12 +31,14 @@ withDefaults(defineProps<Props>(), {
     { phase: 'Q4 · 12月', title: '成本按团队自动分账', desc: '进入季度预算流程' },
   ],
 })
+
+const heading = useSlideTitle(props)
 </script>
 
 <template>
   <div class="slidev-layout cd-roadmap">
     <div class="cd-roadmap__head">
-      <h2 v-if="title" class="cd-roadmap__title">{{ title }}</h2>
+      <h2 v-if="heading" class="cd-roadmap__title">{{ heading }}</h2>
       <slot />
     </div>
     <div class="cd-roadmap__grid">

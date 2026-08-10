@@ -4,6 +4,8 @@
 // panel. Structured card data is a frontmatter array; the slide title comes from
 // the `title` prop or a markdown <h2> in the default slot (choose one).
 // Frontmatter: title, items[]. Default slot: <h2> title.
+import { useSlideTitle } from '../composables/useSlideTitle'
+
 interface StepItem {
   /** lucide icon name, e.g. "git-branch" → renders <div class="i-lucide-git-branch"> */
   icon: string
@@ -15,9 +17,11 @@ interface StepItem {
   desc?: string
 }
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string
+    /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+    frontmatter?: Record<string, any>
     items: StepItem[]
   }>(),
   {
@@ -29,11 +33,13 @@ withDefaults(
     ],
   },
 )
+
+const heading = useSlideTitle(props)
 </script>
 
 <template>
   <div class="slidev-layout cd-steps">
-    <h2 v-if="title" class="cd-steps__title">{{ title }}</h2>
+    <h2 v-if="heading" class="cd-steps__title">{{ heading }}</h2>
     <slot />
     <div class="cd-steps__grid">
       <div v-for="(item, i) in items" :key="i" class="cd-steps__card">

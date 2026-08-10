@@ -7,6 +7,8 @@
 // Frontmatter: members[] (structured). Heading via the `title` prop OR a markdown
 // `## …` in the slot (styled the same). Bottom-right page number via <CDPageNumber />.
 
+import { useSlideTitle } from '../composables/useSlideTitle'
+
 interface TeamMember {
   /** Portrait path; omit to render the "人物照 0N" placeholder tile. */
   photo?: string
@@ -16,9 +18,11 @@ interface TeamMember {
   role?: string
 }
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string
+    /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+    frontmatter?: Record<string, any>
     members?: TeamMember[]
   }>(),
   {
@@ -31,6 +35,8 @@ withDefaults(
   },
 )
 
+const heading = useSlideTitle(props)
+
 // 1-based, zero-padded index for the "人物照 0N" placeholder label.
 const pad = (i: number) => String(i + 1).padStart(2, '0')
 </script>
@@ -38,7 +44,7 @@ const pad = (i: number) => String(i + 1).padStart(2, '0')
 <template>
   <div class="slidev-layout cd-team">
     <div class="cd-team__head">
-      <h2 v-if="title" class="cd-team__title">{{ title }}</h2>
+      <h2 v-if="heading" class="cd-team__title">{{ heading }}</h2>
       <slot v-else>
         <h2 class="cd-team__title">项目组成员</h2>
       </slot>

@@ -5,16 +5,22 @@
 // styles/code.css via `.slidev-layout pre`; this layout only stretches the
 // slotted <pre> to fill the remaining height — it never restates the code bg.
 // Frontmatter: title, file. Default slot: a fenced code block (```py / ```ts …).
-defineProps<{
+import { useSlideTitle } from '../composables/useSlideTitle'
+
+const props = defineProps<{
   title?: string
+  /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+  frontmatter?: Record<string, any>
   file?: string
 }>()
+
+const heading = useSlideTitle(props)
 </script>
 
 <template>
   <div class="slidev-layout cd-code">
-    <div v-if="title || file" class="cd-code__bar">
-      <h2 v-if="title" class="cd-code__title">{{ title }}</h2>
+    <div v-if="heading || file" class="cd-code__bar">
+      <h2 v-if="heading" class="cd-code__title">{{ heading }}</h2>
       <span v-if="file" class="cd-code__file">{{ file }}</span>
     </div>
     <div class="cd-code__body">

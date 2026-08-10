@@ -8,17 +8,23 @@
 // note (micro muted line below the table).
 // Default slot: a markdown table. Use `--:` column alignment on the numeric
 // columns so their header + cells right-align and switch to the mono face.
-defineProps<{
+import { useSlideTitle } from '../composables/useSlideTitle'
+
+const props = defineProps<{
   title?: string
+  /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
+  frontmatter?: Record<string, any>
   meta?: string
   note?: string
 }>()
+
+const heading = useSlideTitle(props)
 </script>
 
 <template>
   <div class="slidev-layout cd-table">
-    <div v-if="title || meta" class="cd-table__head">
-      <h2 v-if="title" class="cd-table__title">{{ title }}</h2>
+    <div v-if="heading || meta" class="cd-table__head">
+      <h2 v-if="heading" class="cd-table__title">{{ heading }}</h2>
       <span v-if="meta" class="cd-table__meta">{{ meta }}</span>
     </div>
 
