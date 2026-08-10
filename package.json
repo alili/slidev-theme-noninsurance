@@ -42,7 +42,8 @@
     "dev:gallery": "slidev gallery.md --open",
     "export": "slidev export example.md",
     "screenshot": "slidev export example.md --format png",
-    "screenshot:layouts": "node scripts/gen-layout-shots.mjs"
+    "screenshot:layouts": "node scripts/gen-layout-shots.mjs",
+    "screenshot:accents": "node scripts/gen-accent-shots.mjs"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.20",

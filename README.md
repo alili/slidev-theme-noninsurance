@@ -46,22 +46,99 @@ canvasWidth: 1920
 > `canvasWidth: 1920` in your headmatter so every layout renders at the intended
 > proportions. (The bundled `example.md` sets it for you.)
 
-## Customization
+## Accent color
 
-- **Accent color** — driven by `themeConfig.primary`; defaults to crimson `rgb(200,20,24)`:
+Set one color. The rest of the palette — the dark and light stops, the glow
+alphas, the chart ramps, the Mermaid theme and the ink on full-accent slides —
+is derived from it.
 
-  ```yaml
-  ---
-  theme: bestony2026
-  themeConfig:
-    primary: '#1E6FD9'   # any color; the whole deck follows
-  ---
+```yaml
+---
+theme: bestony2026
+canvasWidth: 1920
+themeConfig:
+  primary: '#1E6FD9'   # hex, rgb(), hsl(), oklch(), or a named color
+---
+```
+
+Nothing but `primary` differs between these three decks:
+
+<table>
+  <tr>
+    <th width="33%"><code>#C81418</code> (default)</th>
+    <th width="33%"><code>#1E6FD9</code></th>
+    <th width="33%"><code>#F2B90C</code></th>
+  </tr>
+  <tr>
+    <td><img src="assets/accent/crimson-section.png" alt="section layout, crimson primary"></td>
+    <td><img src="assets/accent/blue-section.png" alt="section layout, blue primary"></td>
+    <td><img src="assets/accent/amber-section.png" alt="section layout, amber primary"></td>
+  </tr>
+  <tr>
+    <td><img src="assets/accent/crimson-chart.png" alt="funnel chart, crimson primary"></td>
+    <td><img src="assets/accent/blue-chart.png" alt="funnel chart, blue primary"></td>
+    <td><img src="assets/accent/amber-chart.png" alt="funnel chart, amber primary"></td>
+  </tr>
+</table>
+
+<sub>Note the amber deck: the full-accent slide switches to dark ink, and so do the
+funnel's upper stages, because each is contrast-checked against what sits behind it.</sub>
+
+### What gets derived
+
+| Token | Derivation | Drives |
+| --- | --- | --- |
+| `--cd-accent` | the primary itself | kickers, rules, bullets, links, the primary chart series |
+| `--cd-accent-deep` | darkest stop | low end of sequential scales |
+| `--cd-accent-dim` | dark stop | secondary chart slices |
+| `--cd-accent-light` | light stop | link hover, Mermaid edges, high end of scales |
+| `--cd-accent-bright` | lightest stop | top of the funnel ramp |
+| `--cd-accent-soft` | primary at 18% alpha | inline `code`, chips |
+| `--cd-accent-rgb` | `r, g, b` triplet | the cover / closing / end radial glows, at their own alphas |
+| `--cd-on-accent` | the theme ink with more WCAG contrast against the primary | full-accent slides (`section`, `fact`), table heads, in-funnel labels |
+
+Three things worth knowing about how the ramp is built:
+
+- **It's computed in OKLCh, not HSL.** OKLCh lightness is perceptually uniform, so
+  one set of lightness targets gives an evenly spaced ramp for a red, a blue or a
+  yellow primary. Stops that fall outside sRGB have their chroma reduced rather
+  than their channels clipped, which would skew the hue.
+- **Chroma tapers toward black, but not toward white.** Darkening at full chroma
+  looks neon; lightening at reduced chroma looks washed out.
+- **Surfaces and greys stay neutral.** `--cd-bg`, `--cd-surface*` and the
+  `--cd-neutral*` chart greys are deliberately not tinted toward the primary, so
+  the accent stays the one thing on a slide that carries color.
+
+The math lives in [`composables/palette.ts`](./composables/palette.ts) and the
+runtime that publishes the tokens in
+[`composables/accent.ts`](./composables/accent.ts).
+
+### Overriding from CSS
+
+- **A single derived stop** — the derived tokens are published in a stylesheet of
+  the theme's own, which Slidev loads before a deck's `style.css`, so a plain rule
+  wins:
+
+  ```css
+  :root { --cd-accent-soft: rgba(30, 111, 217, 0.3); }
   ```
+
+- **The accent itself** — target `body`, not `:root`. Slidev applies
+  `themeConfig` to `<body>`, so that is where `--cd-accent` is resolved; a `:root`
+  rule would be shadowed by the theme's own `body` declaration. Setting it here
+  still re-derives the whole ramp:
+
+  ```css
+  body { --cd-accent: #1e6fd9; }
+  ```
+
+## Other customization
 
 - **Global scale** — every font size is `original × var(--cd-scale)`. Shrink or grow
   the whole deck by overriding `--cd-scale` (default `1`) in your own CSS.
-- **Design tokens** — colors, type scale and spacing live in `styles/vars.css`
-  as `--cd-*` custom properties; override any of them per-deck.
+- **Design tokens** — surfaces, ink, greys, type scale and spacing live in
+  [`styles/vars.css`](./styles/vars.css) as `--cd-*` custom properties; override
+  any of them from a `:root` rule per-deck.
 
 ## Layouts
 
@@ -788,7 +865,8 @@ Registered globally — use them in any slide without importing.
 - **`<CDKicker text="Agenda" />`** — crimson square + monospaced, letter-spaced
   eyebrow label. Also accepts a default slot.
 - **`<CDChart type="…" />`** — themed ECharts wrapper. The theme *styling* is
-  built in; the *data* is yours to pass, so charts are reusable across decks.
+  built in (and follows `themeConfig.primary` — see [Accent color](#accent-color));
+  the *data* is yours to pass, so charts are reusable across decks.
   Types: `bar`, `line`, `scatter`, `heatmap`, `sankey` (full-width via the
   `chart` layout) and `pie`, `radar`, `funnel` (in an `image-left` /
   `image-right` `::image::` slot). The host element must have a height.
@@ -859,5 +937,6 @@ a Markdown `##` heading are interchangeable wherever both are listed above.
 - `pnpm export` / `pnpm screenshot` — export PDF / PNGs
 - `pnpm screenshot:layouts` — re-export the gallery images into `assets/layouts/`
   (needs `playwright-chromium`; Slidev prompts to install it on first run)
+- `pnpm screenshot:accents` — re-export the custom-primary images into `assets/accent/`
 
 Learn more about writing themes: <https://sli.dev/guide/write-theme>
