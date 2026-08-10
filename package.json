@@ -39,8 +39,10 @@
   "scripts": {
     "build": "slidev build example.md",
     "dev": "slidev example.md --open",
+    "dev:gallery": "slidev gallery.md --open",
     "export": "slidev export example.md",
-    "screenshot": "slidev export example.md --format png"
+    "screenshot": "slidev export example.md --format png",
+    "screenshot:layouts": "node scripts/gen-layout-shots.mjs"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.20",
