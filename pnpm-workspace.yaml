@@ -1,10 +1,19 @@
 # pnpm settings. As of pnpm 11 these live here, not under a `pnpm` key in
-# package.json — that key is silently ignored.
+# package.json — that key is silently ignored (and pnpm 9 is the reverse, hence
+# the pinned packageManager).
 #
-# Security patch for a transitive, dev-only dependency whose parent pins it below
-# the fixed release: monaco-editor 0.56.0 (the newest) pins `dompurify: 3.4.8`
-# exactly, and several advisories are only fixed in 3.4.13. That is a patch of
-# the same minor, so the override is API-compatible. Drop this once the parent
-# ships the fix itself.
+# Security patches for transitive, dev-only dependencies whose parent resolves
+# them below the fixed release. Drop each entry once the parent ships the fix.
+#
+#   dompurify — monaco-editor 0.56.0 (the newest) pins `dompurify: 3.4.8`
+#   exactly, and several advisories are only fixed in 3.4.13. Same minor, so the
+#   override is API-compatible.
+#
+#   @hono/node-server — @modelcontextprotocol/node declares ^1.19.9, but the
+#   path-traversal fix only landed in 2.0.5. Forcing a major here is safe for
+#   this one consumer: it imports `getRequestListener` from the root export,
+#   which v2 keeps; the only subpath v2 drops is ./vercel, which nothing uses.
+#   Verified by loading @modelcontextprotocol/node against v2.
 overrides:
   dompurify: ^3.4.13
+  '@hono/node-server': ^2.0.5
