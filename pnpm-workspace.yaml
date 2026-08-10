@@ -1,0 +1,10 @@
+# pnpm settings. As of pnpm 11 these live here, not under a `pnpm` key in
+# package.json — that key is silently ignored.
+#
+# Security patch for a transitive, dev-only dependency whose parent pins it below
+# the fixed release: monaco-editor 0.56.0 (the newest) pins `dompurify: 3.4.8`
+# exactly, and several advisories are only fixed in 3.4.13. That is a patch of
+# the same minor, so the override is API-compatible. Drop this once the parent
+# ships the fix itself.
+overrides:
+  dompurify: ^3.4.13
