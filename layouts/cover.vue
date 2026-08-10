@@ -39,7 +39,7 @@ defineProps<{
 .cd-cover__glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(70% 90% at 88% 12%, rgba(200, 20, 24, 0.42) 0%, rgba(200, 20, 24, 0.08) 45%, transparent 70%);
+  background: radial-gradient(70% 90% at 88% 12%, rgba(var(--cd-accent-rgb), 0.42) 0%, rgba(var(--cd-accent-rgb), 0.08) 45%, transparent 70%);
 }
 .cd-cover__bar {
   position: absolute;

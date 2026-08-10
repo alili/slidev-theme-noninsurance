@@ -34,7 +34,7 @@ defineProps<{
 .cd-closing__glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(60% 80% at 12% 88%, rgba(200, 20, 24, 0.34) 0%, rgba(200, 20, 24, 0.06) 45%, transparent 72%);
+  background: radial-gradient(60% 80% at 12% 88%, rgba(var(--cd-accent-rgb), 0.34) 0%, rgba(var(--cd-accent-rgb), 0.06) 45%, transparent 72%);
 }
 .cd-closing__body {
   position: relative;

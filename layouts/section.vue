@@ -20,7 +20,7 @@ defineProps<{ no?: string }>()
   justify-content: center;
   padding: var(--cd-pad-top) var(--cd-pad-x) var(--cd-pad-bottom);
   background: var(--cd-accent);
-  color: #fff;
+  color: var(--cd-on-accent);
 }
 .cd-section__no {
   font-family: var(--cd-font-mono);

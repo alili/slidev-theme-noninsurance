@@ -46,7 +46,7 @@ withDefaults(
 .cd-end__glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(52% 62% at 50% 50%, rgba(200, 20, 24, 0.3) 0%, rgba(200, 20, 24, 0.05) 48%, transparent 74%);
+  background: radial-gradient(52% 62% at 50% 50%, rgba(var(--cd-accent-rgb), 0.3) 0%, rgba(var(--cd-accent-rgb), 0.05) 48%, transparent 74%);
 }
 
 /* thin accent lines bleeding in from the top & bottom edges toward center */

@@ -17,7 +17,7 @@ withDefaults(
     <div
       v-if="icon"
       :class="`i-lucide-${icon}`"
-      style="width: 96px; height: 96px; color: #fff; opacity: 0.9"
+      style="width: 96px; height: 96px; color: var(--cd-on-accent); opacity: 0.9"
     />
     <div class="cd-fact__body">
       <slot />
@@ -34,7 +34,7 @@ withDefaults(
   text-align: center;
   padding: var(--cd-pad-top) var(--cd-pad-x) var(--cd-pad-bottom);
   background: var(--cd-accent);
-  color: #fff;
+  color: var(--cd-on-accent);
 }
 .cd-fact__body {
   display: flex;

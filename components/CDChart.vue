@@ -26,6 +26,8 @@
  * (deep-merged over the themed preset). The host element must have a height.
  */
 import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
+import { ACCENT_CHANGE_EVENT, accentPalette } from '../composables/accent'
+import { readableInk, withAlpha } from '../composables/palette'
 
 const props = withDefaults(
   defineProps<{
@@ -47,14 +49,39 @@ let echarts: any = null
 let chart: any = null
 let ro: ResizeObserver | null = null
 
+/**
+ * Chart colors come from the same tokens as the rest of the deck: the accent
+ * ramp is derived from `themeConfig.primary` (composables/accent.ts) and the
+ * neutrals are read off the CSS custom properties, so overriding either in a
+ * deck reaches the charts too. `--cd-neutral-*` are the greys that carry
+ * secondary series; they stay hue-neutral on purpose so the accent reads as the
+ * one highlighted series.
+ */
+function cssVar(name: string, fallback: string): string {
+  if (typeof document === 'undefined') return fallback
+  const host = document.body ?? document.documentElement
+  return getComputedStyle(host).getPropertyValue(name).trim() || fallback
+}
+
 function theme() {
-  const cs = getComputedStyle(document.documentElement)
+  const accent = accentPalette()
   return {
-    accent: cs.getPropertyValue('--cd-accent').trim() || 'rgb(200,20,24)',
-    fg: '#F2EFEE',
-    muted: '#9C9AA2',
-    line: 'rgba(255,255,255,0.11)',
-    font: "'Noto Sans SC', system-ui, sans-serif",
+    accent: accent.accent,
+    accentDim: accent.dim,
+    accentDeep: accent.deep,
+    accentLight: accent.light,
+    onAccent: accent.onAccent,
+    ramp: accent.ramp,
+    fg: cssVar('--cd-fg', '#F2EFEE'),
+    muted: cssVar('--cd-muted', '#9C9AA2'),
+    line: cssVar('--cd-line', 'rgba(255,255,255,0.11)'),
+    bg: cssVar('--cd-bg', '#08080A'),
+    surface: cssVar('--cd-surface', '#121215'),
+    surface2: cssVar('--cd-surface-2', '#1A1A1F'),
+    neutral: cssVar('--cd-neutral', '#2A2A31'),
+    neutral2: cssVar('--cd-neutral-2', '#4A4A52'),
+    neutral3: cssVar('--cd-neutral-3', '#5A5A63'),
+    font: cssVar('--cd-font-sans', "'Noto Sans SC', system-ui, sans-serif"),
   }
 }
 
@@ -76,7 +103,7 @@ const DEMO = {
   },
   scatter: [
     { data: [[1.2, 14], [2.1, 18], [3.4, 16], [4.8, 22], [5.2, 19], [6.7, 26], [7.9, 24], [9.1, 31], [10.4, 28], [12.2, 33], [13.8, 30], [15.1, 36], [17.4, 34], [19.2, 38]] },
-    { data: [[2.4, 62], [4.1, 74], [6.2, 88], [8.4, 104], [11.2, 121], [14.6, 138], [18.1, 152]], color: '#4A4A52' },
+    { data: [[2.4, 62], [4.1, 74], [6.2, 88], [8.4, 104], [11.2, 121], [14.6, 138], [18.1, 152]] },
   ],
   pie: [
     { name: '存储', value: 42 },
@@ -127,9 +154,10 @@ const DEMO = {
   ],
 }
 
-const SERIES_PALETTE = (t: any) => ['#2A2A31', t.accent, '#8E1D17', '#4A4A52', '#6b1418']
-const PIE_PALETTE = (t: any) => [t.accent, '#8E1D17', '#4A4A52', '#2A2A31', '#6b1418', '#5A5A63']
-const FUNNEL_PALETTE = (t: any) => ['#4A0B0E', '#7A0F12', '#A8151A', t.accent, '#D8262B', '#8E1D17']
+// Categorical: the accent carries the series that matters, the neutrals carry
+// the rest. Sequential (funnel/heatmap) walks the derived accent ramp instead.
+const PIE_PALETTE = (t: any) => [t.accent, t.accentDim, t.neutral2, t.neutral, t.accentDeep, t.neutral3]
+const FUNNEL_PALETTE = (t: any) => t.ramp
 
 function preset(kind: string, t: any, p: typeof props): any {
   const axisBase = {
@@ -152,7 +180,7 @@ function preset(kind: string, t: any, p: typeof props): any {
         const primary = i === ss.length - 1
         return {
           name: s.name, type: 'bar', barWidth: 54, data: s.data,
-          itemStyle: { color: s.color ?? (primary ? t.accent : '#2A2A31') },
+          itemStyle: { color: s.color ?? (primary ? t.accent : t.neutral) },
           label: { show: true, position: 'top', color: primary ? t.fg : t.muted, fontSize: 24, fontFamily: t.font },
         }
       }),
@@ -174,7 +202,7 @@ function preset(kind: string, t: any, p: typeof props): any {
           name: s.name, type: 'line', smooth: true, symbolSize: 12,
           lineStyle: { width: dashed ? 3 : 5, color: dashed ? t.muted : t.accent, type: dashed ? 'dashed' : 'solid' },
           itemStyle: { color: dashed ? t.muted : t.accent },
-          areaStyle: area ? { color: 'rgba(200,20,24,0.14)' } : undefined,
+          areaStyle: area ? { color: withAlpha(t.accent, 0.14) } : undefined,
           data: s.data,
         }
       }),
@@ -190,7 +218,7 @@ function preset(kind: string, t: any, p: typeof props): any {
       yAxis: Object.assign({}, axisBase, { type: 'value', name: 'P95 延迟 (min)', nameLocation: 'middle', nameGap: 84, nameTextStyle: { color: t.muted, fontSize: 24, fontFamily: t.font } }),
       series: ss.map((s: any, i: number) => ({
         type: 'scatter', symbolSize: 22,
-        itemStyle: { color: s.color ?? (i === 0 ? t.accent : '#4A4A52'), opacity: i === 0 ? 0.85 : 0.7 },
+        itemStyle: { color: s.color ?? (i === 0 ? t.accent : t.neutral2), opacity: i === 0 ? 0.85 : 0.7 },
         data: s.data,
       })),
     }
@@ -205,7 +233,7 @@ function preset(kind: string, t: any, p: typeof props): any {
       backgroundColor: 'transparent', textStyle: { fontFamily: t.font }, tooltip: { show: false },
       series: [{
         type: 'pie', radius: ['38%', '60%'], center: ['46%', '52%'], avoidLabelOverlap: true,
-        itemStyle: { borderColor: '#121215', borderWidth: 4 },
+        itemStyle: { borderColor: t.surface, borderWidth: 4 },
         label: { color: t.fg, fontSize: 26, fontFamily: t.font, overflow: 'none', formatter: '{b}  {d}%' },
         labelLine: { lineStyle: { color: t.line } },
         data,
@@ -215,16 +243,24 @@ function preset(kind: string, t: any, p: typeof props): any {
 
   if (kind === 'funnel') {
     const pal = FUNNEL_PALETTE(t)
-    const data = (p.data ?? DEMO.funnel).map((it: any, i: number) => ({
-      value: it.value, name: it.name, itemStyle: { color: it.color ?? pal[i % pal.length] },
-    }))
+    // Labels sit *inside* the stages, and the stages walk the whole ramp — so
+    // each one picks its own ink rather than inheriting the base accent's.
+    const data = (p.data ?? DEMO.funnel).map((it: any, i: number) => {
+      const fill = it.color ?? pal[i % pal.length]
+      return {
+        value: it.value,
+        name: it.name,
+        itemStyle: { color: fill },
+        label: { color: readableInk(fill) },
+      }
+    })
     return {
       backgroundColor: 'transparent', textStyle: { fontFamily: t.font }, tooltip: { show: false },
       series: [{
         type: 'funnel', left: '10%', right: '10%', top: 70, bottom: 70, minSize: '28%', gap: 6, sort: 'descending',
-        label: { position: 'inside', color: '#FFFFFF', fontSize: 26, fontFamily: t.font, formatter: '{b}  {c}' },
+        label: { position: 'inside', fontSize: 26, fontFamily: t.font, formatter: '{b}  {c}' },
         labelLine: { show: false },
-        itemStyle: { borderColor: '#121215', borderWidth: 3 },
+        itemStyle: { borderColor: t.surface, borderWidth: 3 },
         data,
       }],
     }
@@ -250,7 +286,7 @@ function preset(kind: string, t: any, p: typeof props): any {
             value: s.value, name: s.name,
             lineStyle: { color: primary ? t.accent : t.muted, width: primary ? 5 : 3, type: primary ? 'solid' : 'dashed' },
             itemStyle: { color: primary ? t.accent : t.muted },
-            areaStyle: { color: primary ? 'rgba(200,20,24,0.24)' : 'rgba(156,154,162,0.12)' },
+            areaStyle: { color: primary ? withAlpha(t.accent, 0.24) : withAlpha(t.muted, 0.12) },
           }
         }),
       }],
@@ -258,7 +294,7 @@ function preset(kind: string, t: any, p: typeof props): any {
   }
 
   if (kind === 'sankey') {
-    const pal = [t.accent, '#8E1D17', t.accent, '#8E1D17', t.accent, '#4A4A52', '#4A4A52', '#2A2A31']
+    const pal = [t.accent, t.accentDim, t.accent, t.accentDim, t.accent, t.neutral2, t.neutral2, t.neutral]
     const nodes = (p.nodes ?? DEMO.sankeyNodes).map((n: any, i: number) => ({
       name: n.name, itemStyle: { color: n.color ?? pal[i % pal.length] },
     }))
@@ -289,8 +325,8 @@ function preset(kind: string, t: any, p: typeof props): any {
       textStyle: { fontFamily: t.font }, tooltip: { show: false },
       xAxis: { type: 'category', data: hours, splitArea: { show: false }, axisLine: { lineStyle: { color: t.line } }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: 24, fontFamily: t.font } },
       yAxis: { type: 'category', data: days, splitArea: { show: false }, axisLine: { lineStyle: { color: t.line } }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: 24, fontFamily: t.font } },
-      visualMap: { min: 0, max, orient: 'horizontal', left: 'center', bottom: 20, itemWidth: 22, itemHeight: 240, textStyle: { color: t.muted, fontSize: 24, fontFamily: t.font }, inRange: { color: ['#17171C', '#5B0F12', t.accent, '#FF6A5C'] } },
-      series: [{ type: 'heatmap', data, label: { show: false }, itemStyle: { borderColor: '#08080A', borderWidth: 3 } }],
+      visualMap: { min: 0, max, orient: 'horizontal', left: 'center', bottom: 20, itemWidth: 22, itemHeight: 240, textStyle: { color: t.muted, fontSize: 24, fontFamily: t.font }, inRange: { color: [t.surface2, t.accentDeep, t.accent, t.accentLight] } },
+      series: [{ type: 'heatmap', data, label: { show: false }, itemStyle: { borderColor: t.bg, borderWidth: 3 } }],
     }
   }
 
@@ -333,6 +369,9 @@ async function render() {
 onMounted(() => {
   render()
   window.addEventListener('resize', render)
+  // Repaint when the accent ramp is re-derived — the primary lands on <body>
+  // after mount, and HMR can change it while the dev server is running.
+  window.addEventListener(ACCENT_CHANGE_EVENT, render)
   if (typeof ResizeObserver !== 'undefined' && root.value) {
     ro = new ResizeObserver(() => render())
     ro.observe(root.value)
@@ -341,6 +380,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', render)
+  window.removeEventListener(ACCENT_CHANGE_EVENT, render)
   if (ro) { ro.disconnect(); ro = null }
   if (chart) { chart.dispose(); chart = null }
 })

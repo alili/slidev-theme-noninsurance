@@ -21,7 +21,7 @@
   text-decoration: none;
 }
 .slidev-layout a:hover {
-  color: #ff6a5c;
+  color: var(--cd-accent-light);
 }
 .slidev-layout strong {
   color: var(--cd-fg);
@@ -41,7 +41,7 @@
 }
 .slidev-layout ::selection {
   background: var(--cd-accent);
-  color: #fff;
+  color: var(--cd-on-accent);
 }
 .slidev-layout ul li::marker,
 .slidev-layout ol li::marker {
@@ -124,7 +124,7 @@
 }
 .slidev-layout thead th {
   background: var(--cd-accent);
-  color: #fff;
+  color: var(--cd-on-accent);
   font-weight: 500;
   font-size: var(--cd-type-micro);
   letter-spacing: 0.04em;

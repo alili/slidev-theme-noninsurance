@@ -9,6 +9,13 @@
  *   themeConfig:
  *     primary: '#1E6FD9'
  *   ---
+ *
+ * The rest of the accent ramp is DERIVED from that single color at runtime by
+ * composables/accent.ts, which publishes --cd-accent-{deep,dim,light,bright,
+ * soft}, --cd-accent-rgb and --cd-on-accent into a stylesheet of its own. The
+ * values below are the crimson defaults: they keep the first paint correct and
+ * are what you get if the runtime never runs. Overriding a single stop from a
+ * deck's own CSS still works — Slidev loads deck styles after the theme's.
  * ========================================================================== */
 
 /* Ubuntu Mono is loaded on its own (weights 400/700) rather than through
@@ -26,11 +33,23 @@
   --cd-muted: #9c9aa2;
   --cd-line: rgba(255, 255, 255, 0.11);
 
-  /* accent — overridable via themeConfig.primary */
+  /* hue-neutral greys — secondary chart series, so the accent stays the one
+   * highlighted series no matter which primary a deck picks */
+  --cd-neutral: #2a2a31;
+  --cd-neutral-2: #4a4a52;
+  --cd-neutral-3: #5a5a63;
+
+  /* accent — set this one, the ramp below follows */
   --slidev-theme-primary: rgb(200, 20, 24);
-  --cd-accent: var(--slidev-theme-primary);
+
+  /* derived ramp (crimson defaults; recomputed from --cd-accent at runtime) */
+  --cd-accent-rgb: 200, 20, 24;
+  --cd-accent-deep: #4a0304;
+  --cd-accent-dim: #7f090b;
+  --cd-accent-light: #ff6458;
+  --cd-accent-bright: #ffb5ab;
   --cd-accent-soft: rgba(200, 20, 24, 0.18);
-  --cd-accent-dim: #7a0f12;
+  --cd-on-accent: #f2efee;
 
   /* type scale — multiply everything by --cd-scale to shrink/grow globally */
   --cd-scale: 1;
@@ -52,4 +71,14 @@
   /* fonts */
   --cd-font-sans: 'Noto Sans SC', system-ui, sans-serif;
   --cd-font-mono: 'Ubuntu Mono', 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Slidev applies `themeConfig.*` to <body>, not :root, so --cd-accent has to be
+ * resolved *on body*: a var() written in the :root block above would substitute
+ * :root's own --slidev-theme-primary at computed-value time, and every element
+ * would inherit that fallback no matter what the deck configured. The :root copy
+ * keeps the token defined for anything outside <body>. */
+:root,
+body {
+  --cd-accent: var(--slidev-theme-primary);
 }
