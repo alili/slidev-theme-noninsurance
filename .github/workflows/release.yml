@@ -28,9 +28,11 @@ jobs:
           fetch-depth: 0
 
       - name: Setup pnpm
+        # Version comes from package.json#packageManager, so CI and local use the
+        # same pnpm. They must match: overrides live in pnpm-workspace.yaml from
+        # pnpm 10 on, and in package.json#pnpm.overrides before that — each
+        # version silently ignores the other's location.
         uses: pnpm/action-setup@v6
-        with:
-          version: 9
 
       - name: Setup Node
         uses: actions/setup-node@v7
