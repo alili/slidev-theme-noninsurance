@@ -9,31 +9,15 @@
 // Usage: pnpm screenshot:layouts
 
 import { execFileSync } from 'node:child_process'
-import { mkdtempSync, readdirSync, readFileSync, rmSync, mkdirSync, copyFileSync } from 'node:fs'
+import { mkdtempSync, readdirSync, rmSync, mkdirSync, copyFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { readLayouts } from './deck-slides.mjs'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const ENTRY = join(ROOT, 'gallery.md')
 const OUT_DIR = join(ROOT, 'assets', 'layouts')
-
-/**
- * Slide frontmatter and slide separators are both `---` lines, so splitting the
- * deck on them yields [preamble, yaml, body, yaml, body, …]: every odd segment
- * is a frontmatter block. Every slide in gallery.md must declare a layout.
- */
-function readLayouts(file) {
-  const segments = readFileSync(file, 'utf8').split(/^---$/m)
-  const layouts = []
-  for (let i = 1; i < segments.length; i += 2) {
-    const match = segments[i].match(/^layout:\s*(\S+)\s*$/m)
-    if (!match)
-      throw new Error(`gallery.md: slide ${(i + 1) / 2} has no \`layout:\` in its frontmatter`)
-    layouts.push(match[1])
-  }
-  return layouts
-}
 
 const layouts = readLayouts(ENTRY)
 const duplicate = layouts.find((l, i) => layouts.indexOf(l) !== i)

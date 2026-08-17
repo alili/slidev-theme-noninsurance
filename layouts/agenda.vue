@@ -37,7 +37,6 @@ withDefaults(
         </div>
       </div>
     </div>
-    <CDPageNumber />
   </div>
 </template>
 

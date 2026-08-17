@@ -67,7 +67,6 @@ const heading = useSlideTitle(props)
 
     <p v-if="note" class="cd-chart__note">{{ note }}</p>
 
-    <CDPageNumber />
   </div>
 </template>
 

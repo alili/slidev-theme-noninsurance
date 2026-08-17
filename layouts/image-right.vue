@@ -103,7 +103,8 @@ defineProps<{
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 100px 80px 72px;
+  /* Bottom uses the shared token so the visual clears the slide footer. */
+  padding: 80px 100px var(--cd-pad-bottom) 72px;
   background: var(--cd-surface);
   box-sizing: border-box;
   min-width: 0;

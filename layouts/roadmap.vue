@@ -53,7 +53,6 @@ const heading = useSlideTitle(props)
         <span v-if="item.desc" class="cd-roadmap__desc">{{ item.desc }}</span>
       </div>
     </div>
-    <CDPageNumber />
   </div>
 </template>
 

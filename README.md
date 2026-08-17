@@ -132,6 +132,56 @@ runtime that publishes the tokens in
   body { --cd-accent: #1e6fd9; }
   ```
 
+## Slide footer
+
+Every slide carries a footer: **presenter · date** on the left, **page number**
+on the right. It needs no wiring — the theme mounts it as a
+[global layer](https://sli.dev/features/global-layers) (`slide-top.vue`), so it
+also appears on layouts a deck defines itself, and it is baked into exported
+PDFs and PNGs.
+
+If the deck's `cover` already names the presenter, **there is nothing to
+configure** — the footer reads it back from there:
+
+```yaml
+---
+theme: bestony2026
+canvasWidth: 1920
+layout: cover
+speaker: 张岭       # ← the footer picks these up
+date: 2026.07.31
+---
+```
+
+For a deck with no cover, or to set them once and for all, put them on
+`themeConfig`:
+
+```yaml
+---
+theme: bestony2026
+canvasWidth: 1920
+themeConfig:
+  speaker: 张岭
+  date: 2026.07.31
+---
+```
+
+Resolution order for each field, most specific first: the slide's own
+frontmatter → `themeConfig` → the first slide that declares it. An unset field
+simply renders nothing (the date is never filled in with "today", so exporting
+the same deck twice gives identical images).
+
+| What | How |
+| --- | --- |
+| Re-attribute one slide | `speaker:` / `date:` in **that slide's** frontmatter |
+| Hide it on one slide | `footer: false` in that slide's frontmatter |
+| Show it on the `cover` | `footer: true` — covers are the one layout it skips, since their own meta row already carries the same two fields |
+| Turn it off deck-wide | `themeConfig: { footer: false }` — then also set `--cd-footer-band: 0px` in your CSS to give the reclaimed space back to the layouts |
+
+The band is styled as `.cd-footer` in
+[`styles/layout.css`](./styles/layout.css), and switches ink automatically on
+full-accent layouts (`section`, `fact`) and full-bleed media (`image-full`).
+
 ## Other customization
 
 - **Global scale** — every font size is `original × var(--cd-scale)`. Shrink or grow
@@ -139,6 +189,8 @@ runtime that publishes the tokens in
 - **Design tokens** — surfaces, ink, greys, type scale and spacing live in
   [`styles/vars.css`](./styles/vars.css) as `--cd-*` custom properties; override
   any of them from a `:root` rule per-deck.
+- **Footer band** — `--cd-pad-bottom` is `40px + var(--cd-footer-band)`, so a
+  custom layout that pads with the token clears the footer for free.
 
 ## Layouts
 
@@ -153,7 +205,7 @@ produced it — copy the snippet, swap the content, done.
 
 | Layout | Purpose | Key frontmatter / slots |
 | --- | --- | --- |
-| [`cover`](#cover) | Title slide (crimson glow, meta row) | `kicker`, `speaker`, `org`, `date` · slot: `# title` + `subtitle` |
+| [`cover`](#cover) | Title slide (crimson glow, meta row) | `kicker`, `speaker`, `org`, `date` (`speaker` / `date` also feed the [slide footer](#slide-footer)) · slot: `# title` + `subtitle` |
 | [`intro`](#intro) | Centered lead-in | slot: `# title` + `paragraph` |
 | [`section`](#section) | Chapter divider (full crimson) | `no` · slot: `## title` + `note` |
 | [`statement`](#statement) | Big claim + supporting points | `points[{no,text}]` · slot: claim (use `**…**` to highlight) |
@@ -871,6 +923,8 @@ Registered globally — use them in any slide without importing.
   `chart` layout) and `pie`, `radar`, `funnel` (in an `image-left` /
   `image-right` `::image::` slot). The host element must have a height.
 - **`<CDPageNumber />`** — bottom-right page number (reads the current page).
+  Rarely needed now: the [slide footer](#slide-footer) already carries one on
+  every slide. Kept for layouts that want a second, differently placed number.
 
 ### Passing chart data
 
@@ -935,8 +989,10 @@ a Markdown `##` heading are interchangeable wherever both are listed above.
 - Edit `example.md`, `gallery.md`, `layouts/*`, `styles/*` and watch changes live
 - `pnpm build` — build the demo as a static SPA
 - `pnpm export` / `pnpm screenshot` — export PDF / PNGs
+- `pnpm screenshot:preview` — re-export the README preview table into `assets/`
 - `pnpm screenshot:layouts` — re-export the gallery images into `assets/layouts/`
   (needs `playwright-chromium`; Slidev prompts to install it on first run)
 - `pnpm screenshot:accents` — re-export the custom-primary images into `assets/accent/`
+- `pnpm screenshot:all` — all three, which is what a visual change to the theme needs
 
 Learn more about writing themes: <https://sli.dev/guide/write-theme>

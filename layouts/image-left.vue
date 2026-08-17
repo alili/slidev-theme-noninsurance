@@ -88,7 +88,8 @@ const items = computed<CDBullet[]>(() =>
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 56px;
+  /* Bottom uses the shared token so the visual clears the slide footer. */
+  padding: 56px 56px var(--cd-pad-bottom);
   overflow: hidden;
   background: var(--cd-surface);
   border-top: 3px solid var(--cd-accent);

@@ -46,7 +46,6 @@ const heading = useSlideTitle(props)
         </div>
       </div>
     </div>
-    <CDPageNumber />
   </div>
 </template>
 

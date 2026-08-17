@@ -5,7 +5,7 @@
 // underneath. Mirrors the original "团队 / 32" section of Crimson Deck.
 //
 // Frontmatter: members[] (structured). Heading via the `title` prop OR a markdown
-// `## …` in the slot (styled the same). Bottom-right page number via <CDPageNumber />.
+// `## …` in the slot (styled the same). The page number comes from the theme footer.
 
 import { useSlideTitle } from '../composables/useSlideTitle'
 
@@ -72,7 +72,6 @@ const pad = (i: number) => String(i + 1).padStart(2, '0')
       </div>
     </div>
 
-    <CDPageNumber />
   </div>
 </template>
 

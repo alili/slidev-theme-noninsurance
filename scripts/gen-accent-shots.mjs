@@ -24,11 +24,16 @@ const PRIMARIES = [
 ]
 
 /** The two slides are identical across decks; only the headmatter primary moves. */
+// `speaker` / `date` are set on themeConfig rather than a cover slide: these
+// decks have no cover, and it doubles as the reference for how a deck-wide
+// footer is configured.
 const deck = (color, label) => `---
 theme: ./
 canvasWidth: 1920
 themeConfig:
   primary: '${color}'
+  speaker: 张岭
+  date: 2026.07.31
 layout: section
 no: "01"
 ---

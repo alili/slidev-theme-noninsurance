@@ -166,6 +166,73 @@
   color: var(--cd-muted);
 }
 
+/* ---- per-slide footer -------------------------------------------------- */
+/* Mounted on every slide by slide-top.vue, so it is a SIBLING of .slidev-layout
+ * rather than a child: it positions against .slidev-page (inset 0 on the
+ * canvas) and paints above the layout. The space it needs is reserved by
+ * --cd-footer-band, which --cd-pad-bottom builds on, so no layout has to know
+ * the footer exists — including one a deck writes itself, as long as it pads
+ * with the token. */
+.cd-footer {
+  position: absolute;
+  left: var(--cd-pad-x);
+  right: var(--cd-pad-x);
+  bottom: var(--cd-footer-inset);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 40px;
+  /* Never swallow a click meant for a link, a drawing or the nav underneath. */
+  pointer-events: none;
+  font-family: var(--cd-font-mono);
+  font-size: calc(20px * var(--cd-scale));
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--cd-muted);
+  white-space: nowrap;
+}
+.cd-footer__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cd-footer__sep {
+  opacity: 0.55;
+}
+.cd-footer__page {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex: none;
+}
+/* The current page reads first; the deck size stays a muted reference. */
+.cd-footer__page-current {
+  color: var(--cd-fg);
+}
+
+/* Full-accent layouts — same contrast-picked ink the layout itself uses. */
+.cd-footer--on-accent {
+  color: var(--cd-on-accent);
+  opacity: 0.72;
+}
+.cd-footer--on-accent .cd-footer__page-current {
+  color: var(--cd-on-accent);
+}
+
+/* Full-bleed media — the photo behind the band is unknown, so lift the text off
+ * it with a shadow instead of trusting the layout's scrim to reach this far. */
+.cd-footer--on-media {
+  color: var(--cd-fg);
+  opacity: 0.82;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+}
+.cd-footer--on-media .cd-footer__page-current {
+  color: var(--cd-fg);
+}
+
 /* ---- mermaid / plantuml render surfaces -------------------------------- */
 .slidev-layout .mermaid,
 .slidev-layout .slidev-mermaid {

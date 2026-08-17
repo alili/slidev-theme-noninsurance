@@ -63,7 +63,13 @@
 
   /* spacing */
   --cd-pad-top: 96px;
-  --cd-pad-bottom: 80px;
+  /* Every slide carries a footer (slide-top.vue → components/CDFooter.vue), so
+   * the bottom padding is 40px of real breathing room on top of the band that
+   * footer occupies. Reclaim the band with `--cd-footer-band: 0px` if the deck
+   * turns the footer off via `themeConfig.footer: false`. */
+  --cd-footer-band: 60px;
+  --cd-footer-inset: 38px;
+  --cd-pad-bottom: calc(40px + var(--cd-footer-band));
   --cd-pad-x: 100px;
   --cd-gap-title: 48px;
   --cd-gap-item: 26px;
