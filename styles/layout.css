@@ -278,7 +278,6 @@
 }
 
 /* ---- slidev controls & navigation bar ----------------------------------- */
-/* Screen reader text accessibility helper */
 .sr-only {
   position: absolute !important;
   width: 1px !important;
@@ -291,46 +290,52 @@
   border-width: 0 !important;
 }
 
-/* Nav controls container positioning and visibility */
-#page-root .slidev-slide-container {
-  overflow: visible !important;
-}
-
+/* Position in bottom-left naturally - auto-hide by default */
 .slidev-slide-container > .absolute.bottom-0.left-0 {
-  position: fixed !important;
-  bottom: 20px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  z-index: 9999 !important;
-  pointer-events: auto !important;
-  opacity: 0.9 !important;
+  position: absolute !important;
+  bottom: 12px !important;
+  left: 12px !important;
+  z-index: 100 !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  transform: translateY(6px) !important;
   transition: opacity 0.25s ease, transform 0.25s ease !important;
+  width: auto !important;
+  max-width: 90vw !important;
 }
 
-.slidev-slide-container > .absolute.bottom-0.left-0:hover {
+/* Reveal smoothly when mouse hovers over the slide bottom area or the bar itself */
+.slidev-slide-container:hover > .absolute.bottom-0.left-0,
+#slide-container:hover > .absolute.bottom-0.left-0,
+.slidev-slide-container > .absolute.bottom-0.left-0:hover,
+.slidev-slide-container > .absolute.bottom-0.left-0:focus-within {
   opacity: 1 !important;
-  transform: translateX(-50%) scale(1.02) !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
 }
 
-/* Navigation capsule pill */
+/* Navigation compact pill bar */
 .slidev-slide-container nav,
 nav.flex.flex-col {
   display: inline-flex !important;
   flex-direction: row !important;
+  flex-wrap: nowrap !important;
   align-items: center !important;
-  background: rgba(18, 18, 21, 0.92) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  border-radius: 9999px !important;
-  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 199, 44, 0.12) !important;
-  padding: 4px 10px !important;
+  background: rgba(18, 18, 21, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+  padding: 2px 6px !important;
   color: var(--cd-fg) !important;
+  width: max-content !important;
 }
 
 .slidev-slide-container nav > div {
   display: flex !important;
   flex-direction: row !important;
+  flex-wrap: nowrap !important;
   align-items: center !important;
   gap: 2px !important;
   padding: 0 !important;
@@ -346,13 +351,15 @@ nav.flex.flex-col {
 .slidev-slide-container nav [class*="border-main"] {
   display: inline-block !important;
   width: 1px !important;
-  height: 18px !important;
+  height: 16px !important;
   margin: 0 4px !important;
-  background: rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
   border: none !important;
+  align-self: center !important;
+  flex: none !important;
 }
 
-/* Control buttons - explicit sizing and display */
+/* Control buttons */
 .slidev-icon-btn,
 button.slidev-icon-btn,
 a.slidev-icon-btn,
@@ -360,15 +367,13 @@ a.slidev-icon-btn,
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 36px !important;
-  height: 36px !important;
-  min-width: 36px !important;
-  min-height: 36px !important;
-  max-width: 36px !important;
-  max-height: 36px !important;
-  padding: 6px !important;
-  margin: 1px !important;
-  border-radius: 8px !important;
+  width: auto !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  max-height: 28px !important;
+  padding: 4px 6px !important;
+  margin: 0 1px !important;
+  border-radius: 6px !important;
   box-sizing: border-box !important;
   color: var(--cd-fg) !important;
   opacity: 0.85 !important;
@@ -377,53 +382,46 @@ a.slidev-icon-btn,
   cursor: pointer !important;
   outline: none !important;
   user-select: none !important;
+  overflow: hidden !important;
   flex: none !important;
   transition: all 0.15s ease !important;
+  font-size: 14px !important;
 }
 
-/* Inner icon sizing */
+/* Inner icon sizing strictly constrained to 16px */
 .slidev-icon-btn > div,
 .slidev-icon-btn [class*="i-"],
 .slidev-slide-container nav button > div {
   display: inline-block !important;
-  width: 20px !important;
-  height: 20px !important;
-  min-width: 20px !important;
-  min-height: 20px !important;
-  font-size: 20px !important;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  font-size: 16px !important;
   line-height: 1 !important;
   vertical-align: middle !important;
+  color: inherit !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
 }
 
-/* Hover effect with theme accent */
+/* Hover & Active states */
 .slidev-icon-btn:hover,
 button.slidev-icon-btn:hover,
 a.slidev-icon-btn:hover,
 .slidev-slide-container nav button:hover {
   opacity: 1 !important;
-  color: #08080a !important;
-  background: var(--cd-accent) !important;
-  transform: translateY(-1px) !important;
+  color: var(--cd-accent) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
 }
 
-.slidev-icon-btn:hover > div,
-.slidev-icon-btn:hover [class*="i-"],
-.slidev-slide-container nav button:hover > div {
-  color: #08080a !important;
-}
-
-/* Active & disabled states */
 .slidev-icon-btn.active,
 .slidev-slide-container nav button.active {
   opacity: 1 !important;
-  color: #08080a !important;
-  background: var(--cd-accent) !important;
-}
-
-.slidev-icon-btn.active > div,
-.slidev-icon-btn.active [class*="i-"],
-.slidev-slide-container nav button.active > div {
-  color: #08080a !important;
+  color: var(--cd-accent) !important;
+  background: rgba(255, 199, 44, 0.2) !important;
 }
 
 .slidev-icon-btn.disabled,
@@ -431,4 +429,17 @@ a.slidev-icon-btn:hover,
   opacity: 0.25 !important;
   cursor: not-allowed !important;
   pointer-events: none !important;
+}
+
+/* Page number in controls */
+.slidev-slide-container nav .px2,
+.slidev-slide-container nav .my-auto {
+  white-space: nowrap !important;
+  font-family: var(--cd-font-mono) !important;
+  font-size: 13px !important;
+  color: var(--cd-muted) !important;
+  padding: 0 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex: none !important;
 }
