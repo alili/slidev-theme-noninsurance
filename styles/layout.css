@@ -43,9 +43,25 @@
   background: var(--cd-accent);
   color: var(--cd-on-accent);
 }
-.slidev-layout ul li::marker,
 .slidev-layout ol li::marker {
   color: var(--cd-accent);
+}
+/* Markdown `ul` only (`:not([class])` skips layout-owned lists). A 3px
+ * accent rule replaces the disc so the list reads as a list on the dark canvas. */
+.slidev-layout ul:not([class]) {
+  list-style: none;
+}
+.slidev-layout ul:not([class]) > li {
+  position: relative;
+}
+.slidev-layout ul:not([class]) > li::before {
+  content: "";
+  position: absolute;
+  left: -1em;
+  top: 0.72em;
+  width: 0.55em;
+  height: 3px;
+  background: var(--cd-accent);
 }
 .slidev-layout kbd {
   font-family: var(--cd-font-mono);
