@@ -134,7 +134,7 @@ const pad = (i: number) => String(i + 1).padStart(2, '0')
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .cd-image-grid__placeholder {
   position: absolute;
