@@ -57,7 +57,7 @@ is derived from it.
 theme: noninsurance
 canvasWidth: 1920
 themeConfig:
-  primary: '#1E6FD9'   # hex, rgb(), hsl(), oklch(), or a named color
+  primary: '#d9911eff'   # hex, rgb(), hsl(), oklch(), or a named color
 ---
 ```
 
