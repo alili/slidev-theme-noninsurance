@@ -3,7 +3,7 @@ theme: ./
 canvasWidth: 1920
 title: 数据平台重构 · 中期评审
 info: |
-  Crimson Deck — slidev-theme-bestony2026 演示。
+  Crimson Deck — slidev-theme-noninsurance 演示。
   一套黑红暗色的技术评审主题，覆盖封面、章节、数据、图文、代码、图表等 27 种布局。
 layout: cover
 kicker: 2026 · 平台工程评审

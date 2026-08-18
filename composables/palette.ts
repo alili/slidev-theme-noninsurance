@@ -59,8 +59,8 @@ export interface DeriveOptions {
   paper?: string
 }
 
-/** The theme's own crimson — used whenever a primary can't be resolved. */
-export const DEFAULT_PRIMARY = '#c81418'
+/** The theme's default accent — noninsurance safety yellow (#ffc72c). */
+export const DEFAULT_PRIMARY = '#ffc72c'
 
 const DEFAULT_INK = '#f2efee'
 const DEFAULT_PAPER = '#08080a'

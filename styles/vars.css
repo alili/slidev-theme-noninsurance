@@ -40,16 +40,16 @@
   --cd-neutral-3: #5a5a63;
 
   /* accent — set this one, the ramp below follows */
-  --slidev-theme-primary: rgb(200, 20, 24);
+  --slidev-theme-primary: rgb(255, 199, 44);
 
-  /* derived ramp (crimson defaults; recomputed from --cd-accent at runtime) */
-  --cd-accent-rgb: 200, 20, 24;
-  --cd-accent-deep: #4a0304;
-  --cd-accent-dim: #7f090b;
-  --cd-accent-light: #ff6458;
-  --cd-accent-bright: #ffb5ab;
-  --cd-accent-soft: rgba(200, 20, 24, 0.18);
-  --cd-on-accent: #f2efee;
+  /* derived ramp (noninsurance yellow defaults; recomputed from --cd-accent at runtime) */
+  --cd-accent-rgb: 255, 199, 44;
+  --cd-accent-deep: #2f2202;
+  --cd-accent-dim: #533f07;
+  --cd-accent-light: #ffe09a;
+  --cd-accent-bright: #fff7e4;
+  --cd-accent-soft: rgba(255, 199, 44, 0.18);
+  --cd-on-accent: #08080a;
 
   /* type scale — multiply everything by --cd-scale to shrink/grow globally */
   --cd-scale: 1;

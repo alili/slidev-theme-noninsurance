@@ -21,7 +21,7 @@ withDefaults(
   }>(),
   {
     kicker: 'Contact',
-    qrCaption: '扫码加微信',
+    qrCaption: '扫码关注播客',
     contacts: () => [
       { icon: 'mail', label: '邮箱', value: 'zhangling@example.com', mono: true },
       { icon: 'message-circle', label: '微信号', value: 'zhangling_data', mono: true },

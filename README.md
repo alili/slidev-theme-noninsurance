@@ -1,6 +1,6 @@
-# slidev-theme-bestony2026
+# slidev-theme-noninsurance
 
-[![NPM version](https://img.shields.io/npm/v/slidev-theme-bestony2026?color=C81418&label=)](https://www.npmjs.com/package/slidev-theme-bestony2026)
+[![NPM version](https://img.shields.io/npm/v/slidev-theme-noninsurance?color=FFC72C&label=)](https://www.npmjs.com/package/slidev-theme-noninsurance)
 
 **Crimson Deck** — a dark, crimson-accented [Slidev](https://github.com/slidevjs/slidev)
 theme for technical reviews and product updates. Deep black surfaces, a single
@@ -37,7 +37,7 @@ Add the theme to your slides' headmatter — Slidev will prompt to install it:
 
 ```yaml
 ---
-theme: bestony2026
+theme: noninsurance
 canvasWidth: 1920
 ---
 ```
@@ -54,7 +54,7 @@ is derived from it.
 
 ```yaml
 ---
-theme: bestony2026
+theme: noninsurance
 canvasWidth: 1920
 themeConfig:
   primary: '#1E6FD9'   # hex, rgb(), hsl(), oklch(), or a named color
@@ -145,7 +145,7 @@ configure** — the footer reads it back from there:
 
 ```yaml
 ---
-theme: bestony2026
+theme: noninsurance
 canvasWidth: 1920
 layout: cover
 org: 平台工程部     # ← the footer picks these up
@@ -159,7 +159,7 @@ For a deck with no cover, or to set them once and for all, put them on
 
 ```yaml
 ---
-theme: bestony2026
+theme: noninsurance
 canvasWidth: 1920
 themeConfig:
   org: 平台工程部
@@ -252,7 +252,7 @@ of [`gallery.md`](./gallery.md) exported at 1920×1080 — the snippet under eac
 image is that slide's source, so it can be pasted straight into a deck.
 
 The snippets show slide frontmatter only; the deck's **headmatter** (the first
-`---` block) still needs `theme: bestony2026` and `canvasWidth: 1920`.
+`---` block) still needs `theme: noninsurance` and `canvasWidth: 1920`.
 
 ### `cover`
 
