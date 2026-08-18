@@ -3,15 +3,15 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Crimson Deck — a dark, crimson-accented Slidev theme for technical reviews and product updates, with 27 layouts, 8 themed ECharts chart types, and Mermaid / PlantUML support.",
-  "author": "Bestony",
+  "author": "alili",
   "license": "MIT",
-  "homepage": "https://github.com/bestony/slidev-theme-noninsurance#readme",
+  "homepage": "https://github.com/alili/slidev-theme-noninsurance#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bestony/slidev-theme-noninsurance.git"
+    "url": "git+https://github.com/alili/slidev-theme-noninsurance.git"
   },
   "bugs": {
-    "url": "https://github.com/bestony/slidev-theme-noninsurance/issues"
+    "url": "https://github.com/alili/slidev-theme-noninsurance/issues"
   },
   "keywords": [
     "slidev-theme",
