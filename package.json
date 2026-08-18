@@ -1,6 +1,6 @@
 {
   "name": "slidev-theme-noninsurance",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "description": "Crimson Deck — a dark, crimson-accented Slidev theme for technical reviews and product updates, with 27 layouts, 8 themed ECharts chart types, and Mermaid / PlantUML support.",
   "author": "alili",
