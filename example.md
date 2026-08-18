@@ -7,8 +7,8 @@ info: |
   一套黑红暗色的技术评审主题，覆盖封面、章节、数据、图文、代码、图表等 27 种布局。
 layout: cover
 kicker: 2026 · 平台工程评审
-speaker: 张岭
-org: 平台工程部
+speaker: 德福
+org: 赢嘉璟琇
 date: 2026.07.31
 ---
 
@@ -504,15 +504,15 @@ layout: contact
 kicker: Contact
 contacts:
   - icon: mail
-    label: 邮箱
-    value: zhangling@example.com
+    label: 公众号
+    value: 不太保险
   - icon: message-circle
     label: 微信号
-    value: zhangling_data
+    value: nemo611
   - icon: building-2
     label: 团队
-    value: 平台工程部 · 数据平台组
-qrCaption: 扫码加微信
+    value: 赢嘉 · 璟琇
+qrCaption: 扫码关注播客
 ---
 
 ## 保持联系

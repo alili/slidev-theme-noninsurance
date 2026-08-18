@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import defaultQr from '../assets/contact-qr.png'
+
 // Contact — two-column closer. Left: a kicker, an oversized title and a set of
 // labeled contact rows (icon + label/value, hairline-separated). Right: a
-// surface panel with a crimson edge accent holding a framed QR placeholder and
-// a "scan me" caption.
+// surface panel with an accent edge holding a framed QR code and
+// a caption.
 // Frontmatter: kicker, contacts[], qr, qrCaption. Slot: <h2> title (+ optional <p>).
 interface Contact {
   icon: string
@@ -58,8 +60,7 @@ withDefaults(
     <div class="cd-contact__right">
       <div class="cd-contact__accent" />
       <div class="cd-contact__qr-frame">
-        <img v-if="qr" :src="qr" alt="二维码" class="cd-contact__qr-img" />
-        <div v-else class="cd-contact__qr-ph">二维码</div>
+        <img :src="qr || defaultQr" alt="二维码" class="cd-contact__qr-img" />
       </div>
       <div class="cd-contact__caption">
         <div class="i-lucide-qr-code" style="width: 30px; height: 30px; color: var(--cd-accent)" />

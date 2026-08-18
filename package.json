@@ -35,6 +35,7 @@
     "composables",
     "styles",
     "setup",
+    "assets",
     "slide-top.vue",
     "uno.config.ts"
   ],

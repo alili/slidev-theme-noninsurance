@@ -412,14 +412,14 @@ layout: contact
 kicker: Contact
 contacts:
   - icon: mail
-    label: 邮箱
-    value: zhangling@example.com
+    label: 公众号
+    value: 不太保险
   - icon: message-circle
     label: 微信号
-    value: zhangling_data
+    value: nemo611
   - icon: building-2
     label: 团队
-    value: 平台工程部 · 数据平台组
+    value: 赢嘉 · 璟琇
 qrCaption: 扫码加微信
 ---
 

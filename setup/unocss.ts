@@ -1,6 +1,4 @@
-import { defineConfig, presetIcons } from 'unocss'
-import lucide from '@iconify-json/lucide/icons.json'
-import carbon from '@iconify-json/carbon/icons.json'
+import { defineUnoSetup } from '@slidev/types'
 
 const icons = [
   // used by the demo (example.md)
@@ -22,25 +20,13 @@ const carbonIcons = [
   'information', 'camera', 'record', 'magic-wand'
 ]
 
-export default defineConfig({
-  safelist: [
-    ...icons.map(n => `i-lucide-${n}`),
-    ...icons.map(n => `i-lucide:${n}`),
-    ...carbonIcons.map(n => `i-carbon-${n}`),
-    ...carbonIcons.map(n => `i-carbon:${n}`),
-  ],
-  presets: [
-    presetIcons({
-      collections: {
-        lucide: () => lucide,
-        carbon: () => carbon,
-      },
-      scale: 1.2,
-      warn: true,
-      extraProperties: {
-        'display': 'inline-block',
-        'vertical-align': 'middle',
-      },
-    }),
-  ],
+export default defineUnoSetup(() => {
+  return {
+    safelist: [
+      ...icons.map(n => `i-lucide-${n}`),
+      ...icons.map(n => `i-lucide:${n}`),
+      ...carbonIcons.map(n => `i-carbon-${n}`),
+      ...carbonIcons.map(n => `i-carbon:${n}`),
+    ],
+  }
 })

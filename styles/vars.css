@@ -32,6 +32,8 @@
   --cd-fg: #f2efee;
   --cd-muted: #9c9aa2;
   --cd-line: rgba(255, 255, 255, 0.11);
+  --slidev-controls-foreground: #f2efee;
+  --slidev-slide-container-background: #08080a;
 
   /* hue-neutral greys — secondary chart series, so the accent stays the one
    * highlighted series no matter which primary a deck picks */
