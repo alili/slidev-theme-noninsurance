@@ -13,7 +13,7 @@
 .slidev-layout pre,
 .slidev-layout .slidev-code {
   font-family: var(--cd-font-mono) !important;
-  font-size: var(--cd-type-code);
+  font-size: var(--slidev-code-font-size);
   line-height: 1.7;
   background: var(--cd-surface) !important;
   border-top: 3px solid var(--cd-accent);

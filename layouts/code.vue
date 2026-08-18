@@ -4,8 +4,12 @@
 // The panel's look (surface fill, crimson top border, padding) is provided by
 // styles/code.css via `.slidev-layout pre`; this layout only stretches the
 // slotted <pre> to fill the remaining height — it never restates the code bg.
+// Long fences shrink --slidev-code-font-size to fit, then scroll inside <pre>.
 // Frontmatter: title, file. Default slot: a fenced code block (```py / ```ts …).
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useSlideTitle } from '../composables/useSlideTitle'
+
+const MIN_CODE_PX = 16
 
 const props = defineProps<{
   title?: string
@@ -15,6 +19,37 @@ const props = defineProps<{
 }>()
 
 const heading = useSlideTitle(props)
+const body = ref<HTMLElement | null>(null)
+let ro: ResizeObserver | null = null
+
+function fitCode() {
+  const root = body.value
+  const pre = root?.querySelector('pre')
+  if (!root || !pre || pre.clientHeight <= 0)
+    return
+
+  // Measure at the theme default so a resize can't compound a previous shrink.
+  root.style.removeProperty('--slidev-code-font-size')
+  const cs = getComputedStyle(pre)
+  const pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)
+  const avail = pre.clientHeight - pad
+  const text = pre.scrollHeight - pad
+  if (avail <= 0 || text <= avail)
+    return
+
+  const next = Math.max(MIN_CODE_PX, Math.floor(parseFloat(cs.fontSize) * avail / text))
+  root.style.setProperty('--slidev-code-font-size', `${next}px`)
+}
+
+onMounted(() => {
+  if (body.value) {
+    ro = new ResizeObserver(fitCode)
+    ro.observe(body.value)
+  }
+  fitCode()
+  document.fonts?.ready.then(fitCode)
+})
+onUnmounted(() => ro?.disconnect())
 </script>
 
 <template>
@@ -23,7 +58,7 @@ const heading = useSlideTitle(props)
       <h2 v-if="heading" class="cd-code__title">{{ heading }}</h2>
       <span v-if="file" class="cd-code__file">{{ file }}</span>
     </div>
-    <div class="cd-code__body">
+    <div ref="body" class="cd-code__body">
       <slot />
     </div>
   </div>
@@ -57,15 +92,26 @@ const heading = useSlideTitle(props)
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
-/* Stretch the user's fenced code (rendered as <pre>) to fill the panel.
-   Surface fill, crimson top border and padding are inherited from
-   styles/code.css — do not restate the background here. */
-.cd-code :deep(pre) {
+/* Slidev wraps the fence in .slidev-code-wrapper — THAT is the flex child.
+   Stretch the wrapper, then let <pre> fill it and scroll. overflow on <pre>
+   (not the wrapper) keeps the crimson top border pinned while the lines move. */
+.cd-code__body :deep(.slidev-code-wrapper) {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+}
+.cd-code__body :deep(pre) {
   flex: 1;
   min-height: 0;
   margin: 0;
   overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cd-line) transparent;
 }
 </style>
