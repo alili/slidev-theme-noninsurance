@@ -134,13 +134,13 @@ runtime that publishes the tokens in
 
 ## Slide footer
 
-Every slide carries a footer: **presenter · date** on the left, **page number**
+Every slide carries a footer: **org · presenter · date** on the left, **page number**
 on the right. It needs no wiring — the theme mounts it as a
 [global layer](https://sli.dev/features/global-layers) (`slide-top.vue`), so it
 also appears on layouts a deck defines itself, and it is baked into exported
 PDFs and PNGs.
 
-If the deck's `cover` already names the presenter, **there is nothing to
+If the deck's `cover` already names the org / presenter / date, **there is nothing to
 configure** — the footer reads it back from there:
 
 ```yaml
@@ -148,7 +148,8 @@ configure** — the footer reads it back from there:
 theme: bestony2026
 canvasWidth: 1920
 layout: cover
-speaker: 张岭       # ← the footer picks these up
+org: 平台工程部     # ← the footer picks these up
+speaker: 张岭
 date: 2026.07.31
 ---
 ```
@@ -161,6 +162,7 @@ For a deck with no cover, or to set them once and for all, put them on
 theme: bestony2026
 canvasWidth: 1920
 themeConfig:
+  org: 平台工程部
   speaker: 张岭
   date: 2026.07.31
 ---
@@ -173,9 +175,9 @@ the same deck twice gives identical images).
 
 | What | How |
 | --- | --- |
-| Re-attribute one slide | `speaker:` / `date:` in **that slide's** frontmatter |
+| Re-attribute one slide | `org:` / `speaker:` / `date:` in **that slide's** frontmatter |
 | Hide it on one slide | `footer: false` in that slide's frontmatter |
-| Show it on the `cover` | `footer: true` — covers are the one layout it skips, since their own meta row already carries the same two fields |
+| Show it on the `cover` | `footer: true` — covers are the one layout it skips, since their own meta row already carries the same fields |
 | Turn it off deck-wide | `themeConfig: { footer: false }` — then also set `--cd-footer-band: 0px` in your CSS to give the reclaimed space back to the layouts |
 
 The band is styled as `.cd-footer` in
@@ -205,7 +207,7 @@ produced it — copy the snippet, swap the content, done.
 
 | Layout | Purpose | Key frontmatter / slots |
 | --- | --- | --- |
-| [`cover`](#cover) | Title slide (crimson glow, meta row) | `kicker`, `speaker`, `org`, `date` (`speaker` / `date` also feed the [slide footer](#slide-footer)) · slot: `# title` + `subtitle` |
+| [`cover`](#cover) | Title slide (crimson glow, meta row) | `kicker`, `speaker`, `org`, `date` (all three also feed the [slide footer](#slide-footer)) · slot: `# title` + `subtitle` |
 | [`intro`](#intro) | Centered lead-in | slot: `# title` + `paragraph` |
 | [`section`](#section) | Chapter divider (full crimson) | `no` · slot: `## title` + `note` |
 | [`statement`](#statement) | Big claim + supporting points | `points[{no,text}]` · slot: claim (use `**…**` to highlight) |

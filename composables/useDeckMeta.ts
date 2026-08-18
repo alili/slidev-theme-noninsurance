@@ -3,12 +3,12 @@
  *
  * Resolution order, most specific first:
  *
- *  1. the slide's own frontmatter — `speaker:` / `date:` written on that slide,
+ *  1. the slide's own frontmatter — `org:` / `speaker:` / `date:` written on that slide,
  *     so a single page can be re-attributed (a guest section, a different day);
- *  2. `themeConfig.speaker` / `themeConfig.date` — the deck-wide setting, and
+ *  2. `themeConfig.org` / `themeConfig.speaker` / `themeConfig.date` — the deck-wide setting, and
  *     the one place to put it when the deck has no `cover`;
  *  3. the first slide that declares the field — in practice the `cover`, whose
- *     meta row already carries both. This is what makes the footer zero-config:
+ *     meta row already carries them. This is what makes the footer zero-config:
  *     a deck written before the footer existed gets it filled in for free.
  *
  * Nothing is invented when all three miss — an unset date renders as nothing
@@ -20,13 +20,15 @@ import { useNav, useSlideContext } from '@slidev/client'
 import { computed } from 'vue'
 
 export interface DeckMeta {
+  /** Organization / team, e.g. "平台工程部". */
+  org?: string
   /** Presenter name, e.g. "张岭". */
   speaker?: string
   /** Presentation date, e.g. "2026.07.31". */
   date?: string
 }
 
-const FIELDS = ['speaker', 'date'] as const
+const FIELDS = ['org', 'speaker', 'date'] as const
 
 export function useDeckMeta(): ComputedRef<DeckMeta> {
   const { $slidev, $frontmatter } = useSlideContext()

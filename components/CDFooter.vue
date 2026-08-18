@@ -1,13 +1,13 @@
 <script setup lang="ts">
 /**
- * CDFooter — the band every slide carries along its bottom edge: presenter and
- * date on the left, page number on the right.
+ * CDFooter — the band every slide carries along its bottom edge: org, presenter
+ * and date on the left, page number on the right.
  *
  * It is mounted once per slide by the theme's `slide-top.vue` global layer, so
  * no layout — not even one a deck defines itself — has to place it. Everything
  * it renders is resolved per slide:
  *
- *   speaker / date  see composables/useDeckMeta.ts for the precedence chain
+ *   org / speaker / date  see composables/useDeckMeta.ts for the precedence chain
  *   page            the slide-local page injection rather than `nav.currentPage`,
  *                   so a non-`--per-slide` export, which mounts every page at
  *                   once, still numbers each page as itself
@@ -55,14 +55,20 @@ const variantClass = computed(() => ({
 // Zero-padded to the width of the deck, so the numerals stay column-aligned in
 // the monospaced face as the page count crosses 10 / 100.
 const page = computed(() => String($page.value).padStart(String(total.value).length, '0'))
+
+// Leftmost first. Missing fields drop out; separators come from the template.
+const items = computed(() =>
+  [meta.value.org, meta.value.speaker, meta.value.date].filter((v): v is string => Boolean(v)),
+)
 </script>
 
 <template>
   <div v-if="visible" class="cd-footer" :class="variantClass">
     <div class="cd-footer__meta">
-      <span v-if="meta.speaker" class="cd-footer__speaker">{{ meta.speaker }}</span>
-      <span v-if="meta.speaker && meta.date" class="cd-footer__sep">·</span>
-      <span v-if="meta.date" class="cd-footer__date">{{ meta.date }}</span>
+      <template v-for="(item, i) in items" :key="i">
+        <span v-if="i" class="cd-footer__sep">·</span>
+        <span>{{ item }}</span>
+      </template>
     </div>
     <div class="cd-footer__page">
       <span class="cd-footer__page-current">{{ page }}</span>
