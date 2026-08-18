@@ -45,7 +45,7 @@ withDefaults(
         <div v-for="(c, i) in contacts" :key="i" class="cd-contact__item">
           <div
             class="cd-contact__icon"
-            :class="`i-lucide-${c.icon}`"
+            :class="c.icon?.startsWith('i-') ? c.icon : `i-lucide-${c.icon}`"
             style="width: 36px; height: 36px; color: var(--cd-accent)"
           />
           <div class="cd-contact__text">

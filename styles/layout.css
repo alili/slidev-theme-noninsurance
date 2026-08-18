@@ -369,3 +369,153 @@ button.slidev-icon-btn.disabled {
   cursor: not-allowed !important;
   pointer-events: none !important;
 }
+
+/* ============================================================================
+ * Presenter Mode — high-contrast dark theme integration
+ * Fixes low contrast on the right-hand notes & preview panels in presenter view.
+ * ========================================================================== */
+
+.slidev-presenter {
+  background: var(--cd-bg) !important;
+  color: var(--cd-fg) !important;
+}
+
+/* Ensure all presenter grid sections have clear dark backgrounds */
+.slidev-presenter .grid-section {
+  background: var(--cd-surface) !important;
+}
+
+.slidev-presenter .grid-container {
+  background: var(--cd-surface-2) !important;
+}
+
+/* ---- Right-side Note Section: High-contrast typography ------------------ */
+.slidev-presenter .slidev-note,
+.slidev-presenter .slidev-note.prose {
+  color: var(--cd-fg) !important;
+  font-family: var(--cd-font-sans);
+  line-height: 1.6;
+}
+
+/* Explicit high-contrast colors for all markdown elements in presenter notes */
+.slidev-presenter .slidev-note p,
+.slidev-presenter .slidev-note span,
+.slidev-presenter .slidev-note li {
+  color: var(--cd-fg) !important;
+}
+
+.slidev-presenter .slidev-note h1,
+.slidev-presenter .slidev-note h2,
+.slidev-presenter .slidev-note h3,
+.slidev-presenter .slidev-note h4,
+.slidev-presenter .slidev-note h5,
+.slidev-presenter .slidev-note h6 {
+  color: var(--cd-fg) !important;
+  font-weight: 700;
+}
+
+.slidev-presenter .slidev-note strong {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+.slidev-presenter .slidev-note em {
+  color: var(--cd-accent) !important;
+  font-style: normal;
+}
+
+.slidev-presenter .slidev-note a {
+  color: var(--cd-accent) !important;
+  text-decoration: underline;
+}
+
+.slidev-presenter .slidev-note code {
+  color: var(--cd-accent) !important;
+  background: var(--cd-surface-2) !important;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--cd-font-mono);
+}
+
+.slidev-presenter .slidev-note pre {
+  background: var(--cd-surface-2) !important;
+  border: 1px solid var(--cd-line);
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: var(--cd-fg) !important;
+}
+
+.slidev-presenter .slidev-note blockquote {
+  border-left: 3px solid var(--cd-accent) !important;
+  color: var(--cd-muted) !important;
+  padding-left: 14px;
+}
+
+/* Note placeholder / empty note state: keep readable with muted ink */
+.slidev-presenter .slidev-note.opacity-25,
+.slidev-presenter .slidev-note.opacity-50,
+.slidev-presenter .opacity-25 .slidev-note,
+.slidev-presenter .opacity-50 .slidev-note {
+  opacity: 0.75 !important;
+  color: var(--cd-muted) !important;
+}
+
+.slidev-presenter .slidev-note p:empty::before,
+.slidev-presenter .slidev-note:empty::before {
+  color: var(--cd-muted) !important;
+}
+
+/* Note editing textarea */
+.slidev-presenter textarea.slidev-note {
+  color: var(--cd-fg) !important;
+  background: var(--cd-surface) !important;
+  border-color: var(--cd-accent) !important;
+}
+
+.slidev-presenter textarea.slidev-note::placeholder {
+  color: var(--cd-muted) !important;
+  opacity: 0.7 !important;
+}
+
+/* Note action bar (zoom, edit buttons at bottom of note pane) */
+.slidev-presenter .grid-section.note .op25,
+.slidev-presenter .grid-section.bottom .op25 {
+  opacity: 0.75 !important;
+}
+
+.slidev-presenter .grid-section.note button,
+.slidev-presenter .grid-section.note .slidev-icon-btn {
+  color: var(--cd-fg) !important;
+  opacity: 0.85 !important;
+}
+
+.slidev-presenter .grid-section.note button:hover,
+.slidev-presenter .grid-section.note .slidev-icon-btn:hover {
+  color: var(--cd-accent) !important;
+  opacity: 1 !important;
+}
+
+/* ---- Right-side Next Slide Preview & Header Labels ---------------------- */
+.slidev-presenter .grid-section.next .op50,
+.slidev-presenter .grid-section.main .op50 {
+  opacity: 0.85 !important;
+  color: var(--cd-muted) !important;
+}
+
+.slidev-presenter .grid-section.next .text-gray-500 {
+  color: var(--cd-muted) !important;
+  font-size: 16px;
+}
+
+/* Top bar labels & borders */
+.slidev-presenter [border~="main"],
+.slidev-presenter .border-main {
+  border-color: var(--cd-line) !important;
+}
+
+/* Clicks / Notes fade synchronization */
+.slidev-presenter .slidev-note-with-clicks .slidev-note-fade {
+  color: var(--cd-muted) !important;
+  opacity: 0.6 !important;
+}
+

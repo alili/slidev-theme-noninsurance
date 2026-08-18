@@ -27,3 +27,190 @@
 .slidev-layout .slidev-code span {
   font-family: var(--cd-font-mono) !important;
 }
+
+/* ============================================================================
+ * CodeMirror (v5 & v6) — Dark Mode High-Contrast Skin
+ * Ensures text, tokens, line numbers, cursor and selection are vibrant and clear
+ * on dark surfaces.
+ * ========================================================================== */
+
+.cm-editor,
+.CodeMirror {
+  font-family: var(--cd-font-mono) !important;
+  font-size: var(--slidev-code-font-size, 16px);
+  color: var(--cd-fg, #f2efee) !important;
+  background-color: var(--cd-surface, #121215) !important;
+}
+
+.cm-editor .cm-scroller,
+.CodeMirror-scroll {
+  font-family: var(--cd-font-mono) !important;
+  line-height: 1.65;
+}
+
+.cm-editor .cm-content,
+.CodeMirror-lines,
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  color: var(--cd-fg, #f2efee) !important;
+}
+
+.cm-editor .cm-line {
+  color: var(--cd-fg, #f2efee);
+}
+
+/* Gutters & line numbers */
+.cm-editor .cm-gutters,
+.CodeMirror-gutters {
+  background-color: var(--cd-surface-2, #1a1a1f) !important;
+  color: var(--cd-muted, #9c9aa2) !important;
+  border-right: 1px solid var(--cd-line, rgba(255, 255, 255, 0.1)) !important;
+}
+
+.cm-editor .cm-gutterElement,
+.CodeMirror-linenumber {
+  color: var(--cd-muted, #9c9aa2) !important;
+  opacity: 0.75;
+}
+
+/* Caret / cursor */
+.cm-editor .cm-cursor,
+.CodeMirror-cursor {
+  border-left: 2px solid var(--cd-accent, #ffc72c) !important;
+}
+
+/* Selection */
+.cm-editor .cm-selectionBackground,
+.cm-editor.cm-focused .cm-selectionBackground,
+.CodeMirror-selected,
+.CodeMirror-focused .CodeMirror-selected {
+  background-color: rgba(255, 199, 44, 0.25) !important;
+}
+
+/* Active line highlight */
+.cm-editor .cm-activeLine,
+.CodeMirror-activeline-background {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Matching bracket */
+.cm-editor .cm-matchingBracket,
+.CodeMirror-matchingbracket {
+  color: var(--cd-accent, #ffc72c) !important;
+  font-weight: 700;
+  outline: 1px solid var(--cd-accent, #ffc72c);
+}
+
+/* ---- Syntax tokens: High-contrast palette for dark backgrounds --------- */
+.cm-editor .cm-keyword,
+.CodeMirror .cm-keyword {
+  color: #ff7b72 !important;
+  font-weight: 600;
+}
+
+.cm-editor .cm-atom,
+.cm-editor .cm-number,
+.CodeMirror .cm-atom,
+.CodeMirror .cm-number {
+  color: #79c0ff !important;
+}
+
+.cm-editor .cm-def,
+.CodeMirror .cm-def {
+  color: #d2a8ff !important;
+}
+
+.cm-editor .cm-variable,
+.CodeMirror .cm-variable {
+  color: var(--cd-fg, #f2efee) !important;
+}
+
+.cm-editor .cm-variable-2,
+.CodeMirror .cm-variable-2 {
+  color: #a5d6ff !important;
+}
+
+.cm-editor .cm-variable-3,
+.cm-editor .cm-type,
+.CodeMirror .cm-variable-3,
+.CodeMirror .cm-type {
+  color: #ffa657 !important;
+}
+
+.cm-editor .cm-property,
+.CodeMirror .cm-property {
+  color: #7ee787 !important;
+}
+
+.cm-editor .cm-operator,
+.CodeMirror .cm-operator {
+  color: var(--cd-accent, #ffc72c) !important;
+}
+
+.cm-editor .cm-comment,
+.CodeMirror .cm-comment {
+  color: #9c9aa2 !important;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.cm-editor .cm-string,
+.cm-editor .cm-string-2,
+.CodeMirror .cm-string,
+.CodeMirror .cm-string-2 {
+  color: #a5d6ff !important;
+}
+
+.cm-editor .cm-meta,
+.CodeMirror .cm-meta {
+  color: #ffa657 !important;
+}
+
+.cm-editor .cm-qualifier,
+.cm-editor .cm-builtin,
+.CodeMirror .cm-qualifier,
+.CodeMirror .cm-builtin {
+  color: #79c0ff !important;
+}
+
+.cm-editor .cm-bracket,
+.CodeMirror .cm-bracket {
+  color: #e6edf3 !important;
+}
+
+.cm-editor .cm-tag,
+.CodeMirror .cm-tag {
+  color: #7ee787 !important;
+}
+
+.cm-editor .cm-attribute,
+.CodeMirror .cm-attribute {
+  color: #79c0ff !important;
+}
+
+.cm-editor .cm-header,
+.CodeMirror .cm-header {
+  color: #ff7b72 !important;
+  font-weight: 700;
+}
+
+.cm-editor .cm-link,
+.CodeMirror .cm-link {
+  color: var(--cd-accent, #ffc72c) !important;
+  text-decoration: underline;
+}
+
+/* CodeMirror 6 class based highlight tags */
+.cm-editor .tok-keyword { color: #ff7b72 !important; font-weight: 600; }
+.cm-editor .tok-operator { color: var(--cd-accent, #ffc72c) !important; }
+.cm-editor .tok-variableName { color: var(--cd-fg, #f2efee) !important; }
+.cm-editor .tok-typeName { color: #ffa657 !important; }
+.cm-editor .tok-propertyName { color: #7ee787 !important; }
+.cm-editor .tok-string { color: #a5d6ff !important; }
+.cm-editor .tok-number { color: #79c0ff !important; }
+.cm-editor .tok-bool { color: #79c0ff !important; }
+.cm-editor .tok-comment { color: #9c9aa2 !important; font-style: italic; opacity: 0.9; }
+.cm-editor .tok-punctuation { color: #c9d1d9 !important; }
+.cm-editor .tok-heading { color: #ff7b72 !important; font-weight: 700; }
+.cm-editor .tok-link { color: var(--cd-accent, #ffc72c) !important; }
+

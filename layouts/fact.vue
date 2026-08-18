@@ -16,7 +16,7 @@ withDefaults(
   <div class="slidev-layout cd-fact">
     <div
       v-if="icon"
-      :class="`i-lucide-${icon}`"
+      :class="icon?.startsWith('i-') ? icon : `i-lucide-${icon}`"
       style="width: 96px; height: 96px; color: #08080a; opacity: 0.95"
     />
     <div class="cd-fact__body">

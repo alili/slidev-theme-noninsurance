@@ -1,20 +1,24 @@
 <script setup lang="ts">
-// Steps — a titled band of three process cards. Each card stacks a lucide icon,
+// Steps — a titled band of process cards. Each card stacks an icon,
 // a monospaced step label, a title and an optional description on a surface
 // panel. Structured card data is a frontmatter array; the slide title comes from
 // the `title` prop or a markdown <h2> in the default slot (choose one).
-// Frontmatter: title, items[]. Default slot: <h2> title.
+// Frontmatter: title, items[], cols?, gap?. Default slot: <h2> title.
+import { computed } from 'vue'
 import { useSlideTitle } from '../composables/useSlideTitle'
 
 interface StepItem {
-  /** lucide icon name, e.g. "git-branch" → renders <div class="i-lucide-git-branch"> */
+  /** icon name, e.g. "git-branch", "mic-vocal" → renders <div class="i-lucide-git-branch"> */
   icon: string
   /** monospaced accent label, e.g. "Step 01" */
-  step: string
+  step?: string
+  phase?: string
   /** card title (subtitle size, medium weight) */
   title: string
+  name?: string
   /** optional supporting line (micro, muted) */
   desc?: string
+  description?: string
 }
 
 const props = withDefaults(
@@ -23,6 +27,8 @@ const props = withDefaults(
     /** Slidev reserves `title:` — useSlideTitle reads it back from here. */
     frontmatter?: Record<string, any>
     items: StepItem[]
+    cols?: number | string
+    gap?: string | number
   }>(),
   {
     // Sensible fallback so a bare `layout: steps` still renders a full demo.
@@ -35,18 +41,50 @@ const props = withDefaults(
 )
 
 const heading = useSlideTitle(props)
+
+const columnCount = computed(() => {
+  if (props.cols) {
+    const parsed = Number(props.cols)
+    if (!Number.isNaN(parsed) && parsed > 0)
+      return parsed
+  }
+  return Math.max(1, props.items?.length || 3)
+})
+
+function resolveIcon(icon: string) {
+  if (!icon)
+    return ''
+  if (icon.startsWith('i-'))
+    return icon
+  if (icon.includes(':')) {
+    const [collection, name] = icon.split(':')
+    return `i-${collection}-${name}`
+  }
+  return `i-lucide-${icon}`
+}
 </script>
 
 <template>
   <div class="slidev-layout cd-steps">
-    <h2 v-if="heading" class="cd-steps__title">{{ heading }}</h2>
+    <h2 v-if="heading" class="cd-steps__title">
+      {{ heading }}
+    </h2>
     <slot />
-    <div class="cd-steps__grid">
+    <div
+      class="cd-steps__grid"
+      :style="{
+        '--steps-cols': columnCount,
+        ...(gap ? { gap: typeof gap === 'number' ? `${gap}px` : gap } : {}),
+      }"
+    >
       <div v-for="(item, i) in items" :key="i" class="cd-steps__card">
-        <div :class="`i-lucide-${item.icon}`" style="width:44px;height:44px;color:var(--cd-accent)" />
-        <span class="cd-steps__step">{{ item.step }}</span>
-        <span class="cd-steps__name">{{ item.title }}</span>
-        <span v-if="item.desc" class="cd-steps__desc">{{ item.desc }}</span>
+        <div
+          :class="resolveIcon(item.icon)"
+          style="width:44px;height:44px;color:var(--cd-accent);flex-shrink:0"
+        />
+        <span v-if="item.step || item.phase" class="cd-steps__step">{{ item.step || item.phase }}</span>
+        <span class="cd-steps__name">{{ item.title || item.name }}</span>
+        <span v-if="item.desc || item.description" class="cd-steps__desc">{{ item.desc || item.description }}</span>
       </div>
     </div>
   </div>
@@ -80,7 +118,7 @@ const heading = useSlideTitle(props)
 
 .cd-steps__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--steps-cols, 3), minmax(0, 1fr));
   gap: 32px;
 }
 .cd-steps__card {
@@ -89,6 +127,7 @@ const heading = useSlideTitle(props)
   gap: var(--cd-gap-item);
   padding: 52px 44px;
   background: var(--cd-surface);
+  min-width: 0;
 }
 .cd-steps__step {
   font-family: var(--cd-font-mono);
@@ -99,10 +138,13 @@ const heading = useSlideTitle(props)
   font-size: var(--cd-type-subtitle);
   font-weight: 500;
   line-height: 1.25;
+  word-break: break-word;
 }
 .cd-steps__desc {
   font-size: var(--cd-type-micro);
   line-height: 1.55;
   color: var(--cd-muted);
+  word-break: break-word;
 }
 </style>
+

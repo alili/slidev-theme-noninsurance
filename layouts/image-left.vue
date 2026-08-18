@@ -62,7 +62,7 @@ const items = computed<CDBullet[]>(() =>
           <div
             v-if="b.icon"
             class="cd-image-left__bullet-icon"
-            :class="`i-lucide-${b.icon}`"
+            :class="b.icon?.startsWith('i-') ? b.icon : `i-lucide-${b.icon}`"
             style="width: 24px; height: 24px; color: var(--cd-accent)"
           />
           <span v-else class="cd-image-left__square" />
